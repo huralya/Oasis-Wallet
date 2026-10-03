@@ -22,15 +22,50 @@ Oasis Wallet is designed around native `oasis1...` addresses while supporting bo
 - No analytics, telemetry or remote code; the BIP-39 wordlist ships with the extension
 - Manifest V3 with a strict Content Security Policy and minimal permissions
 
-## Install locally
+## Install
 
-1. Download or clone this repository.
-2. Open `chrome://extensions`.
-3. Enable **Developer mode**.
-4. Select **Load unpacked**.
-5. Choose the repository folder containing `manifest.json`.
+### From a release
+
+1. Download `oasis-wallet-vX.Y.Z.zip` from the [Releases](https://github.com/huralya/Oasis-Wallet/releases) page and extract it.
+2. Open `chrome://extensions` and enable **Developer mode**.
+3. Select **Load unpacked** and choose the extracted folder.
+
+Each release includes a `.sha256` file to verify the download.
+
+### From source
+
+1. Clone this repository.
+2. Open `chrome://extensions` and enable **Developer mode**.
+3. Select **Load unpacked** and choose the repository folder containing `manifest.json`.
 
 Use Testnet first. Independent security review is recommended before storing material value.
+
+## Project structure
+
+```
+manifest.json         Extension manifest
+src/
+  popup.html          Popup entry point
+  app.js              Interface and screen logic
+  chain.js            Sapphire RPC, Oasis gRPC-Web and Nexus access, transfers
+  crypto.js           Key derivation, signing, CBOR/RLP encoding, vault encryption
+  store.js            Encrypted vault, preferences and auto-lock session
+  networks.js         Network definitions and explorer links
+  background.js       Auto-lock timer
+  qr.js, icons.js     Local QR generator and interface icons
+  styles.css          Styles and themes
+  bip39-english.txt   BIP-39 English wordlist (verified by SHA-256)
+assets/               Icons, logo and bundled Inter font
+scripts/package.sh    Builds the release archive into dist/
+```
+
+## Building a release
+
+```
+./scripts/package.sh
+```
+
+This writes `dist/oasis-wallet-v<version>.zip` and its SHA-256 checksum, using the version from `manifest.json`.
 
 ## Security model
 

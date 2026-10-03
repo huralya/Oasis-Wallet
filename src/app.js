@@ -219,13 +219,13 @@ function wordsGrid(words, { hidden = false } = {}) {
 // --- Screens: onboarding ---
 
 function loadingView() {
-  return `<div class="screen splash"><img src="oasis-mark.svg" alt="" class="splash-mark"></div>`;
+  return `<div class="screen splash"><img src="../assets/oasis-mark.svg" alt="" class="splash-mark"></div>`;
 }
 
 function welcomeView() {
   return `<div class="screen welcome">
     <div class="welcome-hero">
-      <div class="orb"><span></span><span></span><img src="oasis-mark.svg" alt=""></div>
+      <div class="orb"><span></span><span></span><img src="../assets/oasis-mark.svg" alt=""></div>
       <h1>Oasis Wallet</h1>
       <p>A secure home for your ROSE on Sapphire and Consensus.</p>
     </div>
@@ -372,7 +372,7 @@ function nameWalletView() {
 function unlockView() {
   return `<form class="screen unlock" data-form="unlock" novalidate>
     <div class="unlock-hero">
-      <div class="orb small"><span></span><img src="oasis-mark.svg" alt=""></div>
+      <div class="orb small"><span></span><img src="../assets/oasis-mark.svg" alt=""></div>
       <h1>Welcome back</h1>
       <p>Enter your password to unlock your wallet.</p>
     </div>
@@ -453,7 +453,7 @@ function homeView() {
     </header>
     <div class="scroll"><div class="content">
       <section class="balance-card ${n.kind}">
-        <div class="bc-glow"></div><img class="bc-mark" src="oasis-mark.svg" alt="">
+        <div class="bc-glow"></div><img class="bc-mark" src="../assets/oasis-mark.svg" alt="">
         <div class="bc-top">
           <span class="bc-label">${n.layer} balance</span>
           <span class="env-chip ${isMainnet(n) ? 'main' : 'test'}">${n.env}</span>
@@ -505,7 +505,7 @@ function receiveView() {
     body: `
       ${tabs}
       <div class="qr-card">
-        <div class="qr">${qr}<span class="qr-badge"><img src="oasis-mark.svg" alt=""></span></div>
+        <div class="qr">${qr}<span class="qr-badge"><img src="../assets/oasis-mark.svg" alt=""></span></div>
         <div class="qr-label">${n.layer} ${n.env} · ${evm ? 'EVM address' : 'Oasis address'}</div>
         <div class="qr-address">${addressHtml(address)}</div>
         ${btn({ label: 'Copy address', action: 'copy', kind: 'soft', iconName: 'copy', cls: 'block', attrs: `data-value="${esc(address)}"` })}

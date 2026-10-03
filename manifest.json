@@ -7,22 +7,22 @@
   "minimum_chrome_version": "137",
   "action": {
     "default_title": "Oasis Wallet",
-    "default_popup": "popup.html",
+    "default_popup": "src/popup.html",
     "default_icon": {
-      "16": "icons/icon16.png",
-      "32": "icons/icon32.png",
-      "48": "icons/icon48.png",
-      "128": "icons/icon128.png"
+      "16": "assets/icons/icon16.png",
+      "32": "assets/icons/icon32.png",
+      "48": "assets/icons/icon48.png",
+      "128": "assets/icons/icon128.png"
     }
   },
   "icons": {
-    "16": "icons/icon16.png",
-    "32": "icons/icon32.png",
-    "48": "icons/icon48.png",
-    "128": "icons/icon128.png"
+    "16": "assets/icons/icon16.png",
+    "32": "assets/icons/icon32.png",
+    "48": "assets/icons/icon48.png",
+    "128": "assets/icons/icon128.png"
   },
   "background": {
-    "service_worker": "background.js"
+    "service_worker": "src/background.js"
   },
   "permissions": [
     "storage",
