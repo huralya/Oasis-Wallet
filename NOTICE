@@ -1,0 +1,18 @@
+Oasis Wallet
+Copyright 2026 Huralya
+
+This project is developed by Huralya and is released under the Apache License 2.0.
+
+This project interoperates with the Oasis Network and was developed with reference
+to open-source software from Oasis Protocol Foundation, including:
+
+- ROSE Wallet: https://github.com/oasisprotocol/wallet
+- Oasis SDK: https://github.com/oasisprotocol/oasis-sdk
+
+Those upstream projects are licensed under the Apache License 2.0.
+
+The Oasis name, ROSE name, and Oasis visual marks may be trademarks or brand assets
+of their respective owners. The Apache License 2.0 does not grant trademark rights.
+Use of the Oasis name or logo in a public distribution should comply with the
+applicable Oasis brand/trademark policy and should not imply endorsement or official
+status without permission.
