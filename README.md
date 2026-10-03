@@ -17,7 +17,7 @@ Oasis Wallet is designed around native `oasis1...` addresses while supporting bo
 - Recovery phrase backup check during wallet creation
 - Recovery phrase and private-key export behind password confirmation
 - Configurable auto-lock (on close, 5, 15, 30 or 60 minutes)
-- Light, dark and system themes
+- Light, dark and system themes, and an option to hide balances
 - AES-256-GCM encrypted vault with PBKDF2-SHA256 (600,000 iterations)
 - No analytics, telemetry or remote code; the BIP-39 wordlist ships with the extension
 - Manifest V3 with a strict Content Security Policy and minimal permissions
@@ -78,6 +78,10 @@ Revealing a recovery phrase or private key, removing a wallet and changing the p
 The extension only talks to Oasis RPC, gRPC and Nexus endpoints, enforced through the Content Security Policy. Public addresses are sent to these services to read balances and activity and to submit signed transactions.
 
 The extension requires Chrome 137 or later for native Ed25519 support in WebCrypto.
+
+## Changelog
+
+See [CHANGELOG.md](CHANGELOG.md) for the changes in each release.
 
 ## Networks
 
