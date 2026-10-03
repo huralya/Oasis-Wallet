@@ -6,22 +6,21 @@ Oasis Wallet is designed around native `oasis1...` addresses while supporting bo
 
 ## Features
 
-- Sapphire Mainnet and Testnet
-- Consensus Mainnet and Testnet
-- Native Oasis address shown by default
-- Receive QR codes generated locally inside the extension
-- Send to Sapphire native `oasis1...` addresses via `accounts.Transfer`
-- Send to Sapphire EVM `0x...` addresses
-- Consensus transfers
-- Live network activity from Oasis Nexus
-- Transaction links to Oasis Explorer
-- Multiple independent wallets, each with its own recovery phrase
-- Recovery phrase export after password verification
-- Sapphire and Consensus private-key export after password verification
-- Local password changes without a forced minimum length
-- AES-256-GCM encrypted local vault using PBKDF2-SHA256
-- No analytics or telemetry
-- Manifest V3 with minimal permissions
+- Sapphire and Consensus, Mainnet and Testnet, in one extension
+- Native `oasis1...` addresses by default, with the matching EVM `0x...` address for Sapphire
+- Send to Sapphire native addresses (`accounts.Transfer`), Sapphire EVM addresses and Consensus addresses
+- Full recipient address and network fee shown on a review screen before signing
+- EIP-55 checksum validation for `0x` recipients and strict bech32 validation for `oasis1` recipients
+- Receive screen with locally generated QR codes for both address formats
+- Live balance and activity from Oasis Nexus, with links to Oasis Explorer
+- Multiple independent wallets, each with its own recovery phrase; rename and remove wallets
+- Recovery phrase backup check during wallet creation
+- Recovery phrase and private-key export behind password confirmation
+- Configurable auto-lock (on close, 5, 15, 30 or 60 minutes)
+- Light, dark and system themes
+- AES-256-GCM encrypted vault with PBKDF2-SHA256 (600,000 iterations)
+- No analytics, telemetry or remote code; the BIP-39 wordlist ships with the extension
+- Manifest V3 with a strict Content Security Policy and minimal permissions
 
 ## Install locally
 
@@ -35,9 +34,15 @@ Use Testnet first. Independent security review is recommended before storing mat
 
 ## Security model
 
-Recovery phrases and private keys are never intentionally sent to Huralya. Wallet secrets are kept in memory only while the extension is unlocked and are persisted only inside the encrypted local vault. Sensitive exports require the wallet password again.
+Recovery phrases and private keys never leave the device. They are stored only inside the encrypted vault in `chrome.storage.local`, encrypted with a key derived from the wallet password.
 
-The extension necessarily sends public addresses and network requests to Oasis RPC/gRPC/Nexus infrastructure to retrieve balances, activity, and submit transactions.
+While the wallet is unlocked, the derived vault key is kept in `chrome.storage.session`, which lives in memory, is cleared when the browser closes and is not readable by web pages. The background worker clears it when the auto-lock timer expires. Recovery phrases are never written to session storage. Choosing **When the wallet closes** disables session storage entirely, so every opening of the extension requires the password.
+
+Revealing a recovery phrase or private key, removing a wallet and changing the password always require the password again. Sensitive values copied to the clipboard are cleared after 30 seconds while the extension stays open.
+
+The extension only talks to Oasis RPC, gRPC and Nexus endpoints, enforced through the Content Security Policy. Public addresses are sent to these services to read balances and activity and to submit signed transactions.
+
+The extension requires Chrome 137 or later for native Ed25519 support in WebCrypto.
 
 ## Networks
 
