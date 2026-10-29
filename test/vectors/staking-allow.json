@@ -1,0 +1,710 @@
+{
+ "source": "https://github.com/Zondax/ledger-oasis/blob/514154583decd5d31f86b82944d93131178cc9ac/tests/testvectors/generated.json",
+ "generator": "oasis-core go/staking/gen_vectors",
+ "license": "Apache-2.0",
+ "note": "Valid staking.Allow vectors. Keys are public test keys from the generator.",
+ "vectors": [
+  {
+   "signature_context": "oasis-core/consensus: tx for chain bc1c715319132305795fa86bd32e93291aaacbfb5b5955f3ba78bdba413af9e1",
+   "tx": {
+    "nonce": 0,
+    "fee": {
+     "amount": "0",
+     "gas": 0
+    },
+    "method": "staking.Allow",
+    "body": {
+     "beneficiary": "oasis1qrc00tprnxz4jjgv237p9dgwsky7d7rwcy7esxff",
+     "amount_change": "0"
+    }
+   },
+   "encoded_tx": "pGNmZWWiY2dhcwBmYW1vdW50QGRib2R5omtiZW5lZmljaWFyeVUA8PesI5mFWUkMVHwStQ6Fieb4bsFtYW1vdW50X2NoYW5nZUBlbm9uY2UAZm1ldGhvZG1zdGFraW5nLkFsbG93",
+   "encoded_signed_tx": "omlzaWduYXR1cmWiaXNpZ25hdHVyZVhAr4F1nZGBKQdMbjDthtPqT8d5Mh2LkVIDeJPKK6You1n0DmlfkOqxW/+e4AM5WM6x4o/GkqvyvBU/KOPqXoZ7DGpwdWJsaWNfa2V5WCDF8UQyId+0Sa4pDRyp5qcC0UReYlKAbRKIgEBeJNGuHnN1bnRydXN0ZWRfcmF3X3ZhbHVlWGakY2ZlZaJjZ2FzAGZhbW91bnRAZGJvZHmia2JlbmVmaWNpYXJ5VQDw96wjmYVZSQxUfBK1DoWJ5vhuwW1hbW91bnRfY2hhbmdlQGVub25jZQBmbWV0aG9kbXN0YWtpbmcuQWxsb3c=",
+   "signer_private_key": "d3hiwR2ERU9JVeWlBRaPKMLynzbdj1nEzwTDrbiyqknF8UQyId+0Sa4pDRyp5qcC0UReYlKAbRKIgEBeJNGuHg==",
+   "signer_public_key": "xfFEMiHftEmuKQ0cqeanAtFEXmJSgG0SiIBAXiTRrh4="
+  },
+  {
+   "signature_context": "oasis-core/consensus: tx for chain bc1c715319132305795fa86bd32e93291aaacbfb5b5955f3ba78bdba413af9e1",
+   "tx": {
+    "nonce": 0,
+    "fee": {
+     "amount": "0",
+     "gas": 0
+    },
+    "method": "staking.Allow",
+    "body": {
+     "beneficiary": "oasis1qrc00tprnxz4jjgv237p9dgwsky7d7rwcy7esxff",
+     "negative": true,
+     "amount_change": "0"
+    }
+   },
+   "encoded_tx": "pGNmZWWiY2dhcwBmYW1vdW50QGRib2R5o2huZWdhdGl2ZfVrYmVuZWZpY2lhcnlVAPD3rCOZhVlJDFR8ErUOhYnm+G7BbWFtb3VudF9jaGFuZ2VAZW5vbmNlAGZtZXRob2Rtc3Rha2luZy5BbGxvdw==",
+   "encoded_signed_tx": "omlzaWduYXR1cmWiaXNpZ25hdHVyZVhAVGRy+3HHiJh+VdWseuaAEulaszagFSWezVN7R2GZtzMNrY36+Eh7zesDXkjGpjQbCWaisKGbV3cGsqEX10fTAGpwdWJsaWNfa2V5WCDF8UQyId+0Sa4pDRyp5qcC0UReYlKAbRKIgEBeJNGuHnN1bnRydXN0ZWRfcmF3X3ZhbHVlWHCkY2ZlZaJjZ2FzAGZhbW91bnRAZGJvZHmjaG5lZ2F0aXZl9WtiZW5lZmljaWFyeVUA8PesI5mFWUkMVHwStQ6Fieb4bsFtYW1vdW50X2NoYW5nZUBlbm9uY2UAZm1ldGhvZG1zdGFraW5nLkFsbG93",
+   "signer_private_key": "d3hiwR2ERU9JVeWlBRaPKMLynzbdj1nEzwTDrbiyqknF8UQyId+0Sa4pDRyp5qcC0UReYlKAbRKIgEBeJNGuHg==",
+   "signer_public_key": "xfFEMiHftEmuKQ0cqeanAtFEXmJSgG0SiIBAXiTRrh4="
+  },
+  {
+   "signature_context": "oasis-core/consensus: tx for chain bc1c715319132305795fa86bd32e93291aaacbfb5b5955f3ba78bdba413af9e1",
+   "tx": {
+    "nonce": 0,
+    "fee": {
+     "amount": "0",
+     "gas": 0
+    },
+    "method": "staking.Allow",
+    "body": {
+     "beneficiary": "oasis1qrc00tprnxz4jjgv237p9dgwsky7d7rwcy7esxff",
+     "amount_change": "1000"
+    }
+   },
+   "encoded_tx": "pGNmZWWiY2dhcwBmYW1vdW50QGRib2R5omtiZW5lZmljaWFyeVUA8PesI5mFWUkMVHwStQ6Fieb4bsFtYW1vdW50X2NoYW5nZUID6GVub25jZQBmbWV0aG9kbXN0YWtpbmcuQWxsb3c=",
+   "encoded_signed_tx": "omlzaWduYXR1cmWiaXNpZ25hdHVyZVhAtUb1E4GeAJjcx6Nh4zMrcW+qvoy+4nWdHrW3ojC3d34+3qYuoav8WjC2aH3wbWFTEhFeohRR0F72SFx4qx7ZDWpwdWJsaWNfa2V5WCDF8UQyId+0Sa4pDRyp5qcC0UReYlKAbRKIgEBeJNGuHnN1bnRydXN0ZWRfcmF3X3ZhbHVlWGikY2ZlZaJjZ2FzAGZhbW91bnRAZGJvZHmia2JlbmVmaWNpYXJ5VQDw96wjmYVZSQxUfBK1DoWJ5vhuwW1hbW91bnRfY2hhbmdlQgPoZW5vbmNlAGZtZXRob2Rtc3Rha2luZy5BbGxvdw==",
+   "signer_private_key": "d3hiwR2ERU9JVeWlBRaPKMLynzbdj1nEzwTDrbiyqknF8UQyId+0Sa4pDRyp5qcC0UReYlKAbRKIgEBeJNGuHg==",
+   "signer_public_key": "xfFEMiHftEmuKQ0cqeanAtFEXmJSgG0SiIBAXiTRrh4="
+  },
+  {
+   "signature_context": "oasis-core/consensus: tx for chain bc1c715319132305795fa86bd32e93291aaacbfb5b5955f3ba78bdba413af9e1",
+   "tx": {
+    "nonce": 0,
+    "fee": {
+     "amount": "0",
+     "gas": 0
+    },
+    "method": "staking.Allow",
+    "body": {
+     "beneficiary": "oasis1qrc00tprnxz4jjgv237p9dgwsky7d7rwcy7esxff",
+     "negative": true,
+     "amount_change": "1000"
+    }
+   },
+   "encoded_tx": "pGNmZWWiY2dhcwBmYW1vdW50QGRib2R5o2huZWdhdGl2ZfVrYmVuZWZpY2lhcnlVAPD3rCOZhVlJDFR8ErUOhYnm+G7BbWFtb3VudF9jaGFuZ2VCA+hlbm9uY2UAZm1ldGhvZG1zdGFraW5nLkFsbG93",
+   "encoded_signed_tx": "omlzaWduYXR1cmWiaXNpZ25hdHVyZVhA5Uofvlp5c+4yDN2PbRgogX0aCUzxuPrLkHiGziEgfLevewec+sc0FVE/CfauOsM9MmGkkiFg8GMOyZ0LVgYGBWpwdWJsaWNfa2V5WCDF8UQyId+0Sa4pDRyp5qcC0UReYlKAbRKIgEBeJNGuHnN1bnRydXN0ZWRfcmF3X3ZhbHVlWHKkY2ZlZaJjZ2FzAGZhbW91bnRAZGJvZHmjaG5lZ2F0aXZl9WtiZW5lZmljaWFyeVUA8PesI5mFWUkMVHwStQ6Fieb4bsFtYW1vdW50X2NoYW5nZUID6GVub25jZQBmbWV0aG9kbXN0YWtpbmcuQWxsb3c=",
+   "signer_private_key": "d3hiwR2ERU9JVeWlBRaPKMLynzbdj1nEzwTDrbiyqknF8UQyId+0Sa4pDRyp5qcC0UReYlKAbRKIgEBeJNGuHg==",
+   "signer_public_key": "xfFEMiHftEmuKQ0cqeanAtFEXmJSgG0SiIBAXiTRrh4="
+  },
+  {
+   "signature_context": "oasis-core/consensus: tx for chain bc1c715319132305795fa86bd32e93291aaacbfb5b5955f3ba78bdba413af9e1",
+   "tx": {
+    "nonce": 0,
+    "fee": {
+     "amount": "0",
+     "gas": 0
+    },
+    "method": "staking.Allow",
+    "body": {
+     "beneficiary": "oasis1qrc00tprnxz4jjgv237p9dgwsky7d7rwcy7esxff",
+     "amount_change": "10000000"
+    }
+   },
+   "encoded_tx": "pGNmZWWiY2dhcwBmYW1vdW50QGRib2R5omtiZW5lZmljaWFyeVUA8PesI5mFWUkMVHwStQ6Fieb4bsFtYW1vdW50X2NoYW5nZUOYloBlbm9uY2UAZm1ldGhvZG1zdGFraW5nLkFsbG93",
+   "encoded_signed_tx": "omlzaWduYXR1cmWiaXNpZ25hdHVyZVhAEdfxc8QNngZNR4e+xXK2NCl4CWcGi4PUm3vsX6yVmc46CsYdqxE7CkIk/ye7+ESig9pN3nalSRGquXez/Vh3D2pwdWJsaWNfa2V5WCDF8UQyId+0Sa4pDRyp5qcC0UReYlKAbRKIgEBeJNGuHnN1bnRydXN0ZWRfcmF3X3ZhbHVlWGmkY2ZlZaJjZ2FzAGZhbW91bnRAZGJvZHmia2JlbmVmaWNpYXJ5VQDw96wjmYVZSQxUfBK1DoWJ5vhuwW1hbW91bnRfY2hhbmdlQ5iWgGVub25jZQBmbWV0aG9kbXN0YWtpbmcuQWxsb3c=",
+   "signer_private_key": "d3hiwR2ERU9JVeWlBRaPKMLynzbdj1nEzwTDrbiyqknF8UQyId+0Sa4pDRyp5qcC0UReYlKAbRKIgEBeJNGuHg==",
+   "signer_public_key": "xfFEMiHftEmuKQ0cqeanAtFEXmJSgG0SiIBAXiTRrh4="
+  },
+  {
+   "signature_context": "oasis-core/consensus: tx for chain bc1c715319132305795fa86bd32e93291aaacbfb5b5955f3ba78bdba413af9e1",
+   "tx": {
+    "nonce": 0,
+    "fee": {
+     "amount": "0",
+     "gas": 0
+    },
+    "method": "staking.Allow",
+    "body": {
+     "beneficiary": "oasis1qrc00tprnxz4jjgv237p9dgwsky7d7rwcy7esxff",
+     "negative": true,
+     "amount_change": "10000000"
+    }
+   },
+   "encoded_tx": "pGNmZWWiY2dhcwBmYW1vdW50QGRib2R5o2huZWdhdGl2ZfVrYmVuZWZpY2lhcnlVAPD3rCOZhVlJDFR8ErUOhYnm+G7BbWFtb3VudF9jaGFuZ2VDmJaAZW5vbmNlAGZtZXRob2Rtc3Rha2luZy5BbGxvdw==",
+   "encoded_signed_tx": "omlzaWduYXR1cmWiaXNpZ25hdHVyZVhAEDvyB//PqWyfkmFck6uXCEChGPj3wwXRIwE3gAtH3CyQXVA49cLpTZgrc5sxChJZhy0q4JK4p5WABEnfJXcCC2pwdWJsaWNfa2V5WCDF8UQyId+0Sa4pDRyp5qcC0UReYlKAbRKIgEBeJNGuHnN1bnRydXN0ZWRfcmF3X3ZhbHVlWHOkY2ZlZaJjZ2FzAGZhbW91bnRAZGJvZHmjaG5lZ2F0aXZl9WtiZW5lZmljaWFyeVUA8PesI5mFWUkMVHwStQ6Fieb4bsFtYW1vdW50X2NoYW5nZUOYloBlbm9uY2UAZm1ldGhvZG1zdGFraW5nLkFsbG93",
+   "signer_private_key": "d3hiwR2ERU9JVeWlBRaPKMLynzbdj1nEzwTDrbiyqknF8UQyId+0Sa4pDRyp5qcC0UReYlKAbRKIgEBeJNGuHg==",
+   "signer_public_key": "xfFEMiHftEmuKQ0cqeanAtFEXmJSgG0SiIBAXiTRrh4="
+  },
+  {
+   "signature_context": "oasis-core/consensus: tx for chain bc1c715319132305795fa86bd32e93291aaacbfb5b5955f3ba78bdba413af9e1",
+   "tx": {
+    "nonce": 10,
+    "fee": {
+     "amount": "0",
+     "gas": 0
+    },
+    "method": "staking.Allow",
+    "body": {
+     "beneficiary": "oasis1qrc00tprnxz4jjgv237p9dgwsky7d7rwcy7esxff",
+     "amount_change": "0"
+    }
+   },
+   "encoded_tx": "pGNmZWWiY2dhcwBmYW1vdW50QGRib2R5omtiZW5lZmljaWFyeVUA8PesI5mFWUkMVHwStQ6Fieb4bsFtYW1vdW50X2NoYW5nZUBlbm9uY2UKZm1ldGhvZG1zdGFraW5nLkFsbG93",
+   "encoded_signed_tx": "omlzaWduYXR1cmWiaXNpZ25hdHVyZVhAoPOzm2L4el5eJmrUvbRmkgfgqvgJCVQLExAOj/SJCu9nF0EEMybOUthbSH3tTuR0jst+NZBL/R1zOlYFemPxBWpwdWJsaWNfa2V5WCDF8UQyId+0Sa4pDRyp5qcC0UReYlKAbRKIgEBeJNGuHnN1bnRydXN0ZWRfcmF3X3ZhbHVlWGakY2ZlZaJjZ2FzAGZhbW91bnRAZGJvZHmia2JlbmVmaWNpYXJ5VQDw96wjmYVZSQxUfBK1DoWJ5vhuwW1hbW91bnRfY2hhbmdlQGVub25jZQpmbWV0aG9kbXN0YWtpbmcuQWxsb3c=",
+   "signer_private_key": "d3hiwR2ERU9JVeWlBRaPKMLynzbdj1nEzwTDrbiyqknF8UQyId+0Sa4pDRyp5qcC0UReYlKAbRKIgEBeJNGuHg==",
+   "signer_public_key": "xfFEMiHftEmuKQ0cqeanAtFEXmJSgG0SiIBAXiTRrh4="
+  },
+  {
+   "signature_context": "oasis-core/consensus: tx for chain bc1c715319132305795fa86bd32e93291aaacbfb5b5955f3ba78bdba413af9e1",
+   "tx": {
+    "nonce": 10,
+    "fee": {
+     "amount": "0",
+     "gas": 0
+    },
+    "method": "staking.Allow",
+    "body": {
+     "beneficiary": "oasis1qrc00tprnxz4jjgv237p9dgwsky7d7rwcy7esxff",
+     "negative": true,
+     "amount_change": "0"
+    }
+   },
+   "encoded_tx": "pGNmZWWiY2dhcwBmYW1vdW50QGRib2R5o2huZWdhdGl2ZfVrYmVuZWZpY2lhcnlVAPD3rCOZhVlJDFR8ErUOhYnm+G7BbWFtb3VudF9jaGFuZ2VAZW5vbmNlCmZtZXRob2Rtc3Rha2luZy5BbGxvdw==",
+   "encoded_signed_tx": "omlzaWduYXR1cmWiaXNpZ25hdHVyZVhAealXC5uLmkFbaDP+yjkPFqG3OxbMf6SuWz0VpfJTJjfqFAne9U3voronwhpq66P7jTb+MoumNHcuYbgILxnCCWpwdWJsaWNfa2V5WCDF8UQyId+0Sa4pDRyp5qcC0UReYlKAbRKIgEBeJNGuHnN1bnRydXN0ZWRfcmF3X3ZhbHVlWHCkY2ZlZaJjZ2FzAGZhbW91bnRAZGJvZHmjaG5lZ2F0aXZl9WtiZW5lZmljaWFyeVUA8PesI5mFWUkMVHwStQ6Fieb4bsFtYW1vdW50X2NoYW5nZUBlbm9uY2UKZm1ldGhvZG1zdGFraW5nLkFsbG93",
+   "signer_private_key": "d3hiwR2ERU9JVeWlBRaPKMLynzbdj1nEzwTDrbiyqknF8UQyId+0Sa4pDRyp5qcC0UReYlKAbRKIgEBeJNGuHg==",
+   "signer_public_key": "xfFEMiHftEmuKQ0cqeanAtFEXmJSgG0SiIBAXiTRrh4="
+  },
+  {
+   "signature_context": "oasis-core/consensus: tx for chain bc1c715319132305795fa86bd32e93291aaacbfb5b5955f3ba78bdba413af9e1",
+   "tx": {
+    "nonce": 10,
+    "fee": {
+     "amount": "0",
+     "gas": 0
+    },
+    "method": "staking.Allow",
+    "body": {
+     "beneficiary": "oasis1qrc00tprnxz4jjgv237p9dgwsky7d7rwcy7esxff",
+     "amount_change": "1000"
+    }
+   },
+   "encoded_tx": "pGNmZWWiY2dhcwBmYW1vdW50QGRib2R5omtiZW5lZmljaWFyeVUA8PesI5mFWUkMVHwStQ6Fieb4bsFtYW1vdW50X2NoYW5nZUID6GVub25jZQpmbWV0aG9kbXN0YWtpbmcuQWxsb3c=",
+   "encoded_signed_tx": "omlzaWduYXR1cmWiaXNpZ25hdHVyZVhAN3Fyl68lkf+CQiWlOlZV50qCniKQAUpQaT2k6bgFMNBDcFYxHLrffeJy4mQvkfvZ6PyAGRWSJSqa5wTqeEBxCGpwdWJsaWNfa2V5WCDF8UQyId+0Sa4pDRyp5qcC0UReYlKAbRKIgEBeJNGuHnN1bnRydXN0ZWRfcmF3X3ZhbHVlWGikY2ZlZaJjZ2FzAGZhbW91bnRAZGJvZHmia2JlbmVmaWNpYXJ5VQDw96wjmYVZSQxUfBK1DoWJ5vhuwW1hbW91bnRfY2hhbmdlQgPoZW5vbmNlCmZtZXRob2Rtc3Rha2luZy5BbGxvdw==",
+   "signer_private_key": "d3hiwR2ERU9JVeWlBRaPKMLynzbdj1nEzwTDrbiyqknF8UQyId+0Sa4pDRyp5qcC0UReYlKAbRKIgEBeJNGuHg==",
+   "signer_public_key": "xfFEMiHftEmuKQ0cqeanAtFEXmJSgG0SiIBAXiTRrh4="
+  },
+  {
+   "signature_context": "oasis-core/consensus: tx for chain bc1c715319132305795fa86bd32e93291aaacbfb5b5955f3ba78bdba413af9e1",
+   "tx": {
+    "nonce": 10,
+    "fee": {
+     "amount": "0",
+     "gas": 0
+    },
+    "method": "staking.Allow",
+    "body": {
+     "beneficiary": "oasis1qrc00tprnxz4jjgv237p9dgwsky7d7rwcy7esxff",
+     "negative": true,
+     "amount_change": "1000"
+    }
+   },
+   "encoded_tx": "pGNmZWWiY2dhcwBmYW1vdW50QGRib2R5o2huZWdhdGl2ZfVrYmVuZWZpY2lhcnlVAPD3rCOZhVlJDFR8ErUOhYnm+G7BbWFtb3VudF9jaGFuZ2VCA+hlbm9uY2UKZm1ldGhvZG1zdGFraW5nLkFsbG93",
+   "encoded_signed_tx": "omlzaWduYXR1cmWiaXNpZ25hdHVyZVhA61a12EPAsrasZ1yCib/Adtnprrk8iESJCD59Sc86bvjqY6cjaY/iV4yhnnAilTU3Ttv/b6C9FszjkodFnwhHB2pwdWJsaWNfa2V5WCDF8UQyId+0Sa4pDRyp5qcC0UReYlKAbRKIgEBeJNGuHnN1bnRydXN0ZWRfcmF3X3ZhbHVlWHKkY2ZlZaJjZ2FzAGZhbW91bnRAZGJvZHmjaG5lZ2F0aXZl9WtiZW5lZmljaWFyeVUA8PesI5mFWUkMVHwStQ6Fieb4bsFtYW1vdW50X2NoYW5nZUID6GVub25jZQpmbWV0aG9kbXN0YWtpbmcuQWxsb3c=",
+   "signer_private_key": "d3hiwR2ERU9JVeWlBRaPKMLynzbdj1nEzwTDrbiyqknF8UQyId+0Sa4pDRyp5qcC0UReYlKAbRKIgEBeJNGuHg==",
+   "signer_public_key": "xfFEMiHftEmuKQ0cqeanAtFEXmJSgG0SiIBAXiTRrh4="
+  },
+  {
+   "signature_context": "oasis-core/consensus: tx for chain bc1c715319132305795fa86bd32e93291aaacbfb5b5955f3ba78bdba413af9e1",
+   "tx": {
+    "nonce": 10,
+    "fee": {
+     "amount": "0",
+     "gas": 0
+    },
+    "method": "staking.Allow",
+    "body": {
+     "beneficiary": "oasis1qrc00tprnxz4jjgv237p9dgwsky7d7rwcy7esxff",
+     "amount_change": "10000000"
+    }
+   },
+   "encoded_tx": "pGNmZWWiY2dhcwBmYW1vdW50QGRib2R5omtiZW5lZmljaWFyeVUA8PesI5mFWUkMVHwStQ6Fieb4bsFtYW1vdW50X2NoYW5nZUOYloBlbm9uY2UKZm1ldGhvZG1zdGFraW5nLkFsbG93",
+   "encoded_signed_tx": "omlzaWduYXR1cmWiaXNpZ25hdHVyZVhAQWcDJ284V18O/Ull8WaX6N0rKRy4ko0UKZU5Tw3zfi00dzNmbEuNEA8+AA2Qow9ODRJKosTJyBZ/yUjXB6LECWpwdWJsaWNfa2V5WCDF8UQyId+0Sa4pDRyp5qcC0UReYlKAbRKIgEBeJNGuHnN1bnRydXN0ZWRfcmF3X3ZhbHVlWGmkY2ZlZaJjZ2FzAGZhbW91bnRAZGJvZHmia2JlbmVmaWNpYXJ5VQDw96wjmYVZSQxUfBK1DoWJ5vhuwW1hbW91bnRfY2hhbmdlQ5iWgGVub25jZQpmbWV0aG9kbXN0YWtpbmcuQWxsb3c=",
+   "signer_private_key": "d3hiwR2ERU9JVeWlBRaPKMLynzbdj1nEzwTDrbiyqknF8UQyId+0Sa4pDRyp5qcC0UReYlKAbRKIgEBeJNGuHg==",
+   "signer_public_key": "xfFEMiHftEmuKQ0cqeanAtFEXmJSgG0SiIBAXiTRrh4="
+  },
+  {
+   "signature_context": "oasis-core/consensus: tx for chain bc1c715319132305795fa86bd32e93291aaacbfb5b5955f3ba78bdba413af9e1",
+   "tx": {
+    "nonce": 10,
+    "fee": {
+     "amount": "0",
+     "gas": 0
+    },
+    "method": "staking.Allow",
+    "body": {
+     "beneficiary": "oasis1qrc00tprnxz4jjgv237p9dgwsky7d7rwcy7esxff",
+     "negative": true,
+     "amount_change": "10000000"
+    }
+   },
+   "encoded_tx": "pGNmZWWiY2dhcwBmYW1vdW50QGRib2R5o2huZWdhdGl2ZfVrYmVuZWZpY2lhcnlVAPD3rCOZhVlJDFR8ErUOhYnm+G7BbWFtb3VudF9jaGFuZ2VDmJaAZW5vbmNlCmZtZXRob2Rtc3Rha2luZy5BbGxvdw==",
+   "encoded_signed_tx": "omlzaWduYXR1cmWiaXNpZ25hdHVyZVhA7VdmXZDwsJlvh7wWiJ0OVCRcDLEhZNahL05beNd+aLWxbvWh/09CEKhBIL2Lxm5RhpIKhB4h6FV+qReD93DwD2pwdWJsaWNfa2V5WCDF8UQyId+0Sa4pDRyp5qcC0UReYlKAbRKIgEBeJNGuHnN1bnRydXN0ZWRfcmF3X3ZhbHVlWHOkY2ZlZaJjZ2FzAGZhbW91bnRAZGJvZHmjaG5lZ2F0aXZl9WtiZW5lZmljaWFyeVUA8PesI5mFWUkMVHwStQ6Fieb4bsFtYW1vdW50X2NoYW5nZUOYloBlbm9uY2UKZm1ldGhvZG1zdGFraW5nLkFsbG93",
+   "signer_private_key": "d3hiwR2ERU9JVeWlBRaPKMLynzbdj1nEzwTDrbiyqknF8UQyId+0Sa4pDRyp5qcC0UReYlKAbRKIgEBeJNGuHg==",
+   "signer_public_key": "xfFEMiHftEmuKQ0cqeanAtFEXmJSgG0SiIBAXiTRrh4="
+  },
+  {
+   "signature_context": "oasis-core/consensus: tx for chain bc1c715319132305795fa86bd32e93291aaacbfb5b5955f3ba78bdba413af9e1",
+   "tx": {
+    "nonce": 0,
+    "fee": {
+     "amount": "100000000",
+     "gas": 1000
+    },
+    "method": "staking.Allow",
+    "body": {
+     "beneficiary": "oasis1qrc00tprnxz4jjgv237p9dgwsky7d7rwcy7esxff",
+     "amount_change": "0"
+    }
+   },
+   "encoded_tx": "pGNmZWWiY2dhcxkD6GZhbW91bnREBfXhAGRib2R5omtiZW5lZmljaWFyeVUA8PesI5mFWUkMVHwStQ6Fieb4bsFtYW1vdW50X2NoYW5nZUBlbm9uY2UAZm1ldGhvZG1zdGFraW5nLkFsbG93",
+   "encoded_signed_tx": "omlzaWduYXR1cmWiaXNpZ25hdHVyZVhAGuVxCrQBfsmHboHgDSA2MvfnE2v9bvQzYct+ZT0WjMo2+CbE+iHgd3uwfiTyR0Ofzrb0loBkUzECL33oIKqXBGpwdWJsaWNfa2V5WCDF8UQyId+0Sa4pDRyp5qcC0UReYlKAbRKIgEBeJNGuHnN1bnRydXN0ZWRfcmF3X3ZhbHVlWGykY2ZlZaJjZ2FzGQPoZmFtb3VudEQF9eEAZGJvZHmia2JlbmVmaWNpYXJ5VQDw96wjmYVZSQxUfBK1DoWJ5vhuwW1hbW91bnRfY2hhbmdlQGVub25jZQBmbWV0aG9kbXN0YWtpbmcuQWxsb3c=",
+   "signer_private_key": "d3hiwR2ERU9JVeWlBRaPKMLynzbdj1nEzwTDrbiyqknF8UQyId+0Sa4pDRyp5qcC0UReYlKAbRKIgEBeJNGuHg==",
+   "signer_public_key": "xfFEMiHftEmuKQ0cqeanAtFEXmJSgG0SiIBAXiTRrh4="
+  },
+  {
+   "signature_context": "oasis-core/consensus: tx for chain bc1c715319132305795fa86bd32e93291aaacbfb5b5955f3ba78bdba413af9e1",
+   "tx": {
+    "nonce": 0,
+    "fee": {
+     "amount": "100000000",
+     "gas": 1000
+    },
+    "method": "staking.Allow",
+    "body": {
+     "beneficiary": "oasis1qrc00tprnxz4jjgv237p9dgwsky7d7rwcy7esxff",
+     "negative": true,
+     "amount_change": "0"
+    }
+   },
+   "encoded_tx": "pGNmZWWiY2dhcxkD6GZhbW91bnREBfXhAGRib2R5o2huZWdhdGl2ZfVrYmVuZWZpY2lhcnlVAPD3rCOZhVlJDFR8ErUOhYnm+G7BbWFtb3VudF9jaGFuZ2VAZW5vbmNlAGZtZXRob2Rtc3Rha2luZy5BbGxvdw==",
+   "encoded_signed_tx": "omlzaWduYXR1cmWiaXNpZ25hdHVyZVhATYT0Z0te6tI67YqsvBX9V4axKjZurDQNWnqYVyIF/v9KDfPCaHu3kT+U8+0Y8AWztlrAKGvDRSFM0KO+HFZqAWpwdWJsaWNfa2V5WCDF8UQyId+0Sa4pDRyp5qcC0UReYlKAbRKIgEBeJNGuHnN1bnRydXN0ZWRfcmF3X3ZhbHVlWHakY2ZlZaJjZ2FzGQPoZmFtb3VudEQF9eEAZGJvZHmjaG5lZ2F0aXZl9WtiZW5lZmljaWFyeVUA8PesI5mFWUkMVHwStQ6Fieb4bsFtYW1vdW50X2NoYW5nZUBlbm9uY2UAZm1ldGhvZG1zdGFraW5nLkFsbG93",
+   "signer_private_key": "d3hiwR2ERU9JVeWlBRaPKMLynzbdj1nEzwTDrbiyqknF8UQyId+0Sa4pDRyp5qcC0UReYlKAbRKIgEBeJNGuHg==",
+   "signer_public_key": "xfFEMiHftEmuKQ0cqeanAtFEXmJSgG0SiIBAXiTRrh4="
+  },
+  {
+   "signature_context": "oasis-core/consensus: tx for chain bc1c715319132305795fa86bd32e93291aaacbfb5b5955f3ba78bdba413af9e1",
+   "tx": {
+    "nonce": 0,
+    "fee": {
+     "amount": "100000000",
+     "gas": 1000
+    },
+    "method": "staking.Allow",
+    "body": {
+     "beneficiary": "oasis1qrc00tprnxz4jjgv237p9dgwsky7d7rwcy7esxff",
+     "amount_change": "1000"
+    }
+   },
+   "encoded_tx": "pGNmZWWiY2dhcxkD6GZhbW91bnREBfXhAGRib2R5omtiZW5lZmljaWFyeVUA8PesI5mFWUkMVHwStQ6Fieb4bsFtYW1vdW50X2NoYW5nZUID6GVub25jZQBmbWV0aG9kbXN0YWtpbmcuQWxsb3c=",
+   "encoded_signed_tx": "omlzaWduYXR1cmWiaXNpZ25hdHVyZVhAtNbL5ZTk4lnjixmyfOpCEGnVrUIu0naKqqJG4LkCBTjopAorvpzuuDev3HBmD/LdVivgNT0B9zcQmsnKtfeyBWpwdWJsaWNfa2V5WCDF8UQyId+0Sa4pDRyp5qcC0UReYlKAbRKIgEBeJNGuHnN1bnRydXN0ZWRfcmF3X3ZhbHVlWG6kY2ZlZaJjZ2FzGQPoZmFtb3VudEQF9eEAZGJvZHmia2JlbmVmaWNpYXJ5VQDw96wjmYVZSQxUfBK1DoWJ5vhuwW1hbW91bnRfY2hhbmdlQgPoZW5vbmNlAGZtZXRob2Rtc3Rha2luZy5BbGxvdw==",
+   "signer_private_key": "d3hiwR2ERU9JVeWlBRaPKMLynzbdj1nEzwTDrbiyqknF8UQyId+0Sa4pDRyp5qcC0UReYlKAbRKIgEBeJNGuHg==",
+   "signer_public_key": "xfFEMiHftEmuKQ0cqeanAtFEXmJSgG0SiIBAXiTRrh4="
+  },
+  {
+   "signature_context": "oasis-core/consensus: tx for chain bc1c715319132305795fa86bd32e93291aaacbfb5b5955f3ba78bdba413af9e1",
+   "tx": {
+    "nonce": 0,
+    "fee": {
+     "amount": "100000000",
+     "gas": 1000
+    },
+    "method": "staking.Allow",
+    "body": {
+     "beneficiary": "oasis1qrc00tprnxz4jjgv237p9dgwsky7d7rwcy7esxff",
+     "negative": true,
+     "amount_change": "1000"
+    }
+   },
+   "encoded_tx": "pGNmZWWiY2dhcxkD6GZhbW91bnREBfXhAGRib2R5o2huZWdhdGl2ZfVrYmVuZWZpY2lhcnlVAPD3rCOZhVlJDFR8ErUOhYnm+G7BbWFtb3VudF9jaGFuZ2VCA+hlbm9uY2UAZm1ldGhvZG1zdGFraW5nLkFsbG93",
+   "encoded_signed_tx": "omlzaWduYXR1cmWiaXNpZ25hdHVyZVhAgEqNniHIOBYfeNzCTUfS8oosuQW4ebdGCA0f0mzMNTOFW75EIxOnjVRvrCX+SNpUsETxgrR6tsoX2QFnW9F3DWpwdWJsaWNfa2V5WCDF8UQyId+0Sa4pDRyp5qcC0UReYlKAbRKIgEBeJNGuHnN1bnRydXN0ZWRfcmF3X3ZhbHVlWHikY2ZlZaJjZ2FzGQPoZmFtb3VudEQF9eEAZGJvZHmjaG5lZ2F0aXZl9WtiZW5lZmljaWFyeVUA8PesI5mFWUkMVHwStQ6Fieb4bsFtYW1vdW50X2NoYW5nZUID6GVub25jZQBmbWV0aG9kbXN0YWtpbmcuQWxsb3c=",
+   "signer_private_key": "d3hiwR2ERU9JVeWlBRaPKMLynzbdj1nEzwTDrbiyqknF8UQyId+0Sa4pDRyp5qcC0UReYlKAbRKIgEBeJNGuHg==",
+   "signer_public_key": "xfFEMiHftEmuKQ0cqeanAtFEXmJSgG0SiIBAXiTRrh4="
+  },
+  {
+   "signature_context": "oasis-core/consensus: tx for chain bc1c715319132305795fa86bd32e93291aaacbfb5b5955f3ba78bdba413af9e1",
+   "tx": {
+    "nonce": 0,
+    "fee": {
+     "amount": "100000000",
+     "gas": 1000
+    },
+    "method": "staking.Allow",
+    "body": {
+     "beneficiary": "oasis1qrc00tprnxz4jjgv237p9dgwsky7d7rwcy7esxff",
+     "amount_change": "10000000"
+    }
+   },
+   "encoded_tx": "pGNmZWWiY2dhcxkD6GZhbW91bnREBfXhAGRib2R5omtiZW5lZmljaWFyeVUA8PesI5mFWUkMVHwStQ6Fieb4bsFtYW1vdW50X2NoYW5nZUOYloBlbm9uY2UAZm1ldGhvZG1zdGFraW5nLkFsbG93",
+   "encoded_signed_tx": "omlzaWduYXR1cmWiaXNpZ25hdHVyZVhAxGSjmvFqV9Z2Gket3YjArYY8idlC6spEZ0nPNUkn43JCjMMOmbHITQoJzTzhd9yl6Tt/so02zrEGz21P7bhkAmpwdWJsaWNfa2V5WCDF8UQyId+0Sa4pDRyp5qcC0UReYlKAbRKIgEBeJNGuHnN1bnRydXN0ZWRfcmF3X3ZhbHVlWG+kY2ZlZaJjZ2FzGQPoZmFtb3VudEQF9eEAZGJvZHmia2JlbmVmaWNpYXJ5VQDw96wjmYVZSQxUfBK1DoWJ5vhuwW1hbW91bnRfY2hhbmdlQ5iWgGVub25jZQBmbWV0aG9kbXN0YWtpbmcuQWxsb3c=",
+   "signer_private_key": "d3hiwR2ERU9JVeWlBRaPKMLynzbdj1nEzwTDrbiyqknF8UQyId+0Sa4pDRyp5qcC0UReYlKAbRKIgEBeJNGuHg==",
+   "signer_public_key": "xfFEMiHftEmuKQ0cqeanAtFEXmJSgG0SiIBAXiTRrh4="
+  },
+  {
+   "signature_context": "oasis-core/consensus: tx for chain bc1c715319132305795fa86bd32e93291aaacbfb5b5955f3ba78bdba413af9e1",
+   "tx": {
+    "nonce": 0,
+    "fee": {
+     "amount": "100000000",
+     "gas": 1000
+    },
+    "method": "staking.Allow",
+    "body": {
+     "beneficiary": "oasis1qrc00tprnxz4jjgv237p9dgwsky7d7rwcy7esxff",
+     "negative": true,
+     "amount_change": "10000000"
+    }
+   },
+   "encoded_tx": "pGNmZWWiY2dhcxkD6GZhbW91bnREBfXhAGRib2R5o2huZWdhdGl2ZfVrYmVuZWZpY2lhcnlVAPD3rCOZhVlJDFR8ErUOhYnm+G7BbWFtb3VudF9jaGFuZ2VDmJaAZW5vbmNlAGZtZXRob2Rtc3Rha2luZy5BbGxvdw==",
+   "encoded_signed_tx": "omlzaWduYXR1cmWiaXNpZ25hdHVyZVhA4Y5Lc+mczLe2GYmbxeTo6mfppGJ9KpRR7jaY+SdkoieApwEpYTlOZoP6RNVbevRNSkwxdnbslJzeO39pij3uDWpwdWJsaWNfa2V5WCDF8UQyId+0Sa4pDRyp5qcC0UReYlKAbRKIgEBeJNGuHnN1bnRydXN0ZWRfcmF3X3ZhbHVlWHmkY2ZlZaJjZ2FzGQPoZmFtb3VudEQF9eEAZGJvZHmjaG5lZ2F0aXZl9WtiZW5lZmljaWFyeVUA8PesI5mFWUkMVHwStQ6Fieb4bsFtYW1vdW50X2NoYW5nZUOYloBlbm9uY2UAZm1ldGhvZG1zdGFraW5nLkFsbG93",
+   "signer_private_key": "d3hiwR2ERU9JVeWlBRaPKMLynzbdj1nEzwTDrbiyqknF8UQyId+0Sa4pDRyp5qcC0UReYlKAbRKIgEBeJNGuHg==",
+   "signer_public_key": "xfFEMiHftEmuKQ0cqeanAtFEXmJSgG0SiIBAXiTRrh4="
+  },
+  {
+   "signature_context": "oasis-core/consensus: tx for chain bc1c715319132305795fa86bd32e93291aaacbfb5b5955f3ba78bdba413af9e1",
+   "tx": {
+    "nonce": 10,
+    "fee": {
+     "amount": "100000000",
+     "gas": 1000
+    },
+    "method": "staking.Allow",
+    "body": {
+     "beneficiary": "oasis1qrc00tprnxz4jjgv237p9dgwsky7d7rwcy7esxff",
+     "amount_change": "0"
+    }
+   },
+   "encoded_tx": "pGNmZWWiY2dhcxkD6GZhbW91bnREBfXhAGRib2R5omtiZW5lZmljaWFyeVUA8PesI5mFWUkMVHwStQ6Fieb4bsFtYW1vdW50X2NoYW5nZUBlbm9uY2UKZm1ldGhvZG1zdGFraW5nLkFsbG93",
+   "encoded_signed_tx": "omlzaWduYXR1cmWiaXNpZ25hdHVyZVhASZxU0e+2NZiw3eOugPT5JHSGASPNIog66AFuFy7Z9yI3GTjJoXMdq8Rf9sz7rzwKUA4qmu0NWEao7GJKv5A4C2pwdWJsaWNfa2V5WCDF8UQyId+0Sa4pDRyp5qcC0UReYlKAbRKIgEBeJNGuHnN1bnRydXN0ZWRfcmF3X3ZhbHVlWGykY2ZlZaJjZ2FzGQPoZmFtb3VudEQF9eEAZGJvZHmia2JlbmVmaWNpYXJ5VQDw96wjmYVZSQxUfBK1DoWJ5vhuwW1hbW91bnRfY2hhbmdlQGVub25jZQpmbWV0aG9kbXN0YWtpbmcuQWxsb3c=",
+   "signer_private_key": "d3hiwR2ERU9JVeWlBRaPKMLynzbdj1nEzwTDrbiyqknF8UQyId+0Sa4pDRyp5qcC0UReYlKAbRKIgEBeJNGuHg==",
+   "signer_public_key": "xfFEMiHftEmuKQ0cqeanAtFEXmJSgG0SiIBAXiTRrh4="
+  },
+  {
+   "signature_context": "oasis-core/consensus: tx for chain bc1c715319132305795fa86bd32e93291aaacbfb5b5955f3ba78bdba413af9e1",
+   "tx": {
+    "nonce": 10,
+    "fee": {
+     "amount": "100000000",
+     "gas": 1000
+    },
+    "method": "staking.Allow",
+    "body": {
+     "beneficiary": "oasis1qrc00tprnxz4jjgv237p9dgwsky7d7rwcy7esxff",
+     "negative": true,
+     "amount_change": "0"
+    }
+   },
+   "encoded_tx": "pGNmZWWiY2dhcxkD6GZhbW91bnREBfXhAGRib2R5o2huZWdhdGl2ZfVrYmVuZWZpY2lhcnlVAPD3rCOZhVlJDFR8ErUOhYnm+G7BbWFtb3VudF9jaGFuZ2VAZW5vbmNlCmZtZXRob2Rtc3Rha2luZy5BbGxvdw==",
+   "encoded_signed_tx": "omlzaWduYXR1cmWiaXNpZ25hdHVyZVhAn1Uktey0zsTyJHHrjx5Nj36sCV6AS9I/Z064j2zjDFdsviBCO4dJiz27GevA6enjsEud8iAGCYf1o4qQM88XCmpwdWJsaWNfa2V5WCDF8UQyId+0Sa4pDRyp5qcC0UReYlKAbRKIgEBeJNGuHnN1bnRydXN0ZWRfcmF3X3ZhbHVlWHakY2ZlZaJjZ2FzGQPoZmFtb3VudEQF9eEAZGJvZHmjaG5lZ2F0aXZl9WtiZW5lZmljaWFyeVUA8PesI5mFWUkMVHwStQ6Fieb4bsFtYW1vdW50X2NoYW5nZUBlbm9uY2UKZm1ldGhvZG1zdGFraW5nLkFsbG93",
+   "signer_private_key": "d3hiwR2ERU9JVeWlBRaPKMLynzbdj1nEzwTDrbiyqknF8UQyId+0Sa4pDRyp5qcC0UReYlKAbRKIgEBeJNGuHg==",
+   "signer_public_key": "xfFEMiHftEmuKQ0cqeanAtFEXmJSgG0SiIBAXiTRrh4="
+  },
+  {
+   "signature_context": "oasis-core/consensus: tx for chain bc1c715319132305795fa86bd32e93291aaacbfb5b5955f3ba78bdba413af9e1",
+   "tx": {
+    "nonce": 10,
+    "fee": {
+     "amount": "100000000",
+     "gas": 1000
+    },
+    "method": "staking.Allow",
+    "body": {
+     "beneficiary": "oasis1qrc00tprnxz4jjgv237p9dgwsky7d7rwcy7esxff",
+     "amount_change": "1000"
+    }
+   },
+   "encoded_tx": "pGNmZWWiY2dhcxkD6GZhbW91bnREBfXhAGRib2R5omtiZW5lZmljaWFyeVUA8PesI5mFWUkMVHwStQ6Fieb4bsFtYW1vdW50X2NoYW5nZUID6GVub25jZQpmbWV0aG9kbXN0YWtpbmcuQWxsb3c=",
+   "encoded_signed_tx": "omlzaWduYXR1cmWiaXNpZ25hdHVyZVhAcQilJwLrZZ2ac135a3w0fw2YoDE0XQp0cTpwOp8R+0gJkqiZ77PFKtr2rbM4pMqB+e2O/QAN9z95ViDYJRO9BmpwdWJsaWNfa2V5WCDF8UQyId+0Sa4pDRyp5qcC0UReYlKAbRKIgEBeJNGuHnN1bnRydXN0ZWRfcmF3X3ZhbHVlWG6kY2ZlZaJjZ2FzGQPoZmFtb3VudEQF9eEAZGJvZHmia2JlbmVmaWNpYXJ5VQDw96wjmYVZSQxUfBK1DoWJ5vhuwW1hbW91bnRfY2hhbmdlQgPoZW5vbmNlCmZtZXRob2Rtc3Rha2luZy5BbGxvdw==",
+   "signer_private_key": "d3hiwR2ERU9JVeWlBRaPKMLynzbdj1nEzwTDrbiyqknF8UQyId+0Sa4pDRyp5qcC0UReYlKAbRKIgEBeJNGuHg==",
+   "signer_public_key": "xfFEMiHftEmuKQ0cqeanAtFEXmJSgG0SiIBAXiTRrh4="
+  },
+  {
+   "signature_context": "oasis-core/consensus: tx for chain bc1c715319132305795fa86bd32e93291aaacbfb5b5955f3ba78bdba413af9e1",
+   "tx": {
+    "nonce": 10,
+    "fee": {
+     "amount": "100000000",
+     "gas": 1000
+    },
+    "method": "staking.Allow",
+    "body": {
+     "beneficiary": "oasis1qrc00tprnxz4jjgv237p9dgwsky7d7rwcy7esxff",
+     "negative": true,
+     "amount_change": "1000"
+    }
+   },
+   "encoded_tx": "pGNmZWWiY2dhcxkD6GZhbW91bnREBfXhAGRib2R5o2huZWdhdGl2ZfVrYmVuZWZpY2lhcnlVAPD3rCOZhVlJDFR8ErUOhYnm+G7BbWFtb3VudF9jaGFuZ2VCA+hlbm9uY2UKZm1ldGhvZG1zdGFraW5nLkFsbG93",
+   "encoded_signed_tx": "omlzaWduYXR1cmWiaXNpZ25hdHVyZVhAoLvxa/DfFqzj8KxBQVvJCuqx3L+4bx3dUYF5foVTVrMQ5d9ZlB2PZ/sTg1bDUGqBYGMoxUdVfdm90f4iCregCWpwdWJsaWNfa2V5WCDF8UQyId+0Sa4pDRyp5qcC0UReYlKAbRKIgEBeJNGuHnN1bnRydXN0ZWRfcmF3X3ZhbHVlWHikY2ZlZaJjZ2FzGQPoZmFtb3VudEQF9eEAZGJvZHmjaG5lZ2F0aXZl9WtiZW5lZmljaWFyeVUA8PesI5mFWUkMVHwStQ6Fieb4bsFtYW1vdW50X2NoYW5nZUID6GVub25jZQpmbWV0aG9kbXN0YWtpbmcuQWxsb3c=",
+   "signer_private_key": "d3hiwR2ERU9JVeWlBRaPKMLynzbdj1nEzwTDrbiyqknF8UQyId+0Sa4pDRyp5qcC0UReYlKAbRKIgEBeJNGuHg==",
+   "signer_public_key": "xfFEMiHftEmuKQ0cqeanAtFEXmJSgG0SiIBAXiTRrh4="
+  },
+  {
+   "signature_context": "oasis-core/consensus: tx for chain bc1c715319132305795fa86bd32e93291aaacbfb5b5955f3ba78bdba413af9e1",
+   "tx": {
+    "nonce": 10,
+    "fee": {
+     "amount": "100000000",
+     "gas": 1000
+    },
+    "method": "staking.Allow",
+    "body": {
+     "beneficiary": "oasis1qrc00tprnxz4jjgv237p9dgwsky7d7rwcy7esxff",
+     "amount_change": "10000000"
+    }
+   },
+   "encoded_tx": "pGNmZWWiY2dhcxkD6GZhbW91bnREBfXhAGRib2R5omtiZW5lZmljaWFyeVUA8PesI5mFWUkMVHwStQ6Fieb4bsFtYW1vdW50X2NoYW5nZUOYloBlbm9uY2UKZm1ldGhvZG1zdGFraW5nLkFsbG93",
+   "encoded_signed_tx": "omlzaWduYXR1cmWiaXNpZ25hdHVyZVhAhlGpxO82/T9anK8Vku8qEfDhg2SsAM0o5TfG6uo857BKggXNBScmwMEnnackm9KjAVN9YmjeOLnBBsR0aJ0dAGpwdWJsaWNfa2V5WCDF8UQyId+0Sa4pDRyp5qcC0UReYlKAbRKIgEBeJNGuHnN1bnRydXN0ZWRfcmF3X3ZhbHVlWG+kY2ZlZaJjZ2FzGQPoZmFtb3VudEQF9eEAZGJvZHmia2JlbmVmaWNpYXJ5VQDw96wjmYVZSQxUfBK1DoWJ5vhuwW1hbW91bnRfY2hhbmdlQ5iWgGVub25jZQpmbWV0aG9kbXN0YWtpbmcuQWxsb3c=",
+   "signer_private_key": "d3hiwR2ERU9JVeWlBRaPKMLynzbdj1nEzwTDrbiyqknF8UQyId+0Sa4pDRyp5qcC0UReYlKAbRKIgEBeJNGuHg==",
+   "signer_public_key": "xfFEMiHftEmuKQ0cqeanAtFEXmJSgG0SiIBAXiTRrh4="
+  },
+  {
+   "signature_context": "oasis-core/consensus: tx for chain bc1c715319132305795fa86bd32e93291aaacbfb5b5955f3ba78bdba413af9e1",
+   "tx": {
+    "nonce": 10,
+    "fee": {
+     "amount": "100000000",
+     "gas": 1000
+    },
+    "method": "staking.Allow",
+    "body": {
+     "beneficiary": "oasis1qrc00tprnxz4jjgv237p9dgwsky7d7rwcy7esxff",
+     "negative": true,
+     "amount_change": "10000000"
+    }
+   },
+   "encoded_tx": "pGNmZWWiY2dhcxkD6GZhbW91bnREBfXhAGRib2R5o2huZWdhdGl2ZfVrYmVuZWZpY2lhcnlVAPD3rCOZhVlJDFR8ErUOhYnm+G7BbWFtb3VudF9jaGFuZ2VDmJaAZW5vbmNlCmZtZXRob2Rtc3Rha2luZy5BbGxvdw==",
+   "encoded_signed_tx": "omlzaWduYXR1cmWiaXNpZ25hdHVyZVhAuWgHfiFyvAzNqwr1bz7rTcW5brJv4jhS7HsSxildMe21kM/Ba51zQjHSvpMkrqxbqH3Lb8reluN9uj7vwldIDmpwdWJsaWNfa2V5WCDF8UQyId+0Sa4pDRyp5qcC0UReYlKAbRKIgEBeJNGuHnN1bnRydXN0ZWRfcmF3X3ZhbHVlWHmkY2ZlZaJjZ2FzGQPoZmFtb3VudEQF9eEAZGJvZHmjaG5lZ2F0aXZl9WtiZW5lZmljaWFyeVUA8PesI5mFWUkMVHwStQ6Fieb4bsFtYW1vdW50X2NoYW5nZUOYloBlbm9uY2UKZm1ldGhvZG1zdGFraW5nLkFsbG93",
+   "signer_private_key": "d3hiwR2ERU9JVeWlBRaPKMLynzbdj1nEzwTDrbiyqknF8UQyId+0Sa4pDRyp5qcC0UReYlKAbRKIgEBeJNGuHg==",
+   "signer_public_key": "xfFEMiHftEmuKQ0cqeanAtFEXmJSgG0SiIBAXiTRrh4="
+  },
+  {
+   "signature_context": "oasis-core/consensus: tx for chain bc1c715319132305795fa86bd32e93291aaacbfb5b5955f3ba78bdba413af9e1",
+   "tx": {
+    "nonce": 0,
+    "fee": {
+     "amount": "4242",
+     "gas": 1000
+    },
+    "method": "staking.Allow",
+    "body": {
+     "beneficiary": "oasis1qrc00tprnxz4jjgv237p9dgwsky7d7rwcy7esxff",
+     "amount_change": "0"
+    }
+   },
+   "encoded_tx": "pGNmZWWiY2dhcxkD6GZhbW91bnRCEJJkYm9keaJrYmVuZWZpY2lhcnlVAPD3rCOZhVlJDFR8ErUOhYnm+G7BbWFtb3VudF9jaGFuZ2VAZW5vbmNlAGZtZXRob2Rtc3Rha2luZy5BbGxvdw==",
+   "encoded_signed_tx": "omlzaWduYXR1cmWiaXNpZ25hdHVyZVhA6N/vV4IfNnA+Q95Cn58fnNdfAcmDdNpp7XQVN6YfmnMIE18fzC6CjEZwZrga7/IKY5i4SzJn7c8/prru+uqXAWpwdWJsaWNfa2V5WCDF8UQyId+0Sa4pDRyp5qcC0UReYlKAbRKIgEBeJNGuHnN1bnRydXN0ZWRfcmF3X3ZhbHVlWGqkY2ZlZaJjZ2FzGQPoZmFtb3VudEIQkmRib2R5omtiZW5lZmljaWFyeVUA8PesI5mFWUkMVHwStQ6Fieb4bsFtYW1vdW50X2NoYW5nZUBlbm9uY2UAZm1ldGhvZG1zdGFraW5nLkFsbG93",
+   "signer_private_key": "d3hiwR2ERU9JVeWlBRaPKMLynzbdj1nEzwTDrbiyqknF8UQyId+0Sa4pDRyp5qcC0UReYlKAbRKIgEBeJNGuHg==",
+   "signer_public_key": "xfFEMiHftEmuKQ0cqeanAtFEXmJSgG0SiIBAXiTRrh4="
+  },
+  {
+   "signature_context": "oasis-core/consensus: tx for chain bc1c715319132305795fa86bd32e93291aaacbfb5b5955f3ba78bdba413af9e1",
+   "tx": {
+    "nonce": 0,
+    "fee": {
+     "amount": "4242",
+     "gas": 1000
+    },
+    "method": "staking.Allow",
+    "body": {
+     "beneficiary": "oasis1qrc00tprnxz4jjgv237p9dgwsky7d7rwcy7esxff",
+     "negative": true,
+     "amount_change": "0"
+    }
+   },
+   "encoded_tx": "pGNmZWWiY2dhcxkD6GZhbW91bnRCEJJkYm9keaNobmVnYXRpdmX1a2JlbmVmaWNpYXJ5VQDw96wjmYVZSQxUfBK1DoWJ5vhuwW1hbW91bnRfY2hhbmdlQGVub25jZQBmbWV0aG9kbXN0YWtpbmcuQWxsb3c=",
+   "encoded_signed_tx": "omlzaWduYXR1cmWiaXNpZ25hdHVyZVhAQxGtfuXOsOu53TRNCdFRTKp99MIiyE6vHDN94XTUzp9UCsubZwC959yK3r9BzO5+8iRglLqCpAuHcd2tQ53ZDGpwdWJsaWNfa2V5WCDF8UQyId+0Sa4pDRyp5qcC0UReYlKAbRKIgEBeJNGuHnN1bnRydXN0ZWRfcmF3X3ZhbHVlWHSkY2ZlZaJjZ2FzGQPoZmFtb3VudEIQkmRib2R5o2huZWdhdGl2ZfVrYmVuZWZpY2lhcnlVAPD3rCOZhVlJDFR8ErUOhYnm+G7BbWFtb3VudF9jaGFuZ2VAZW5vbmNlAGZtZXRob2Rtc3Rha2luZy5BbGxvdw==",
+   "signer_private_key": "d3hiwR2ERU9JVeWlBRaPKMLynzbdj1nEzwTDrbiyqknF8UQyId+0Sa4pDRyp5qcC0UReYlKAbRKIgEBeJNGuHg==",
+   "signer_public_key": "xfFEMiHftEmuKQ0cqeanAtFEXmJSgG0SiIBAXiTRrh4="
+  },
+  {
+   "signature_context": "oasis-core/consensus: tx for chain bc1c715319132305795fa86bd32e93291aaacbfb5b5955f3ba78bdba413af9e1",
+   "tx": {
+    "nonce": 0,
+    "fee": {
+     "amount": "4242",
+     "gas": 1000
+    },
+    "method": "staking.Allow",
+    "body": {
+     "beneficiary": "oasis1qrc00tprnxz4jjgv237p9dgwsky7d7rwcy7esxff",
+     "amount_change": "1000"
+    }
+   },
+   "encoded_tx": "pGNmZWWiY2dhcxkD6GZhbW91bnRCEJJkYm9keaJrYmVuZWZpY2lhcnlVAPD3rCOZhVlJDFR8ErUOhYnm+G7BbWFtb3VudF9jaGFuZ2VCA+hlbm9uY2UAZm1ldGhvZG1zdGFraW5nLkFsbG93",
+   "encoded_signed_tx": "omlzaWduYXR1cmWiaXNpZ25hdHVyZVhA6mXpKPdQAeqU9Hl1giXdpzzy00ADxEfwiQlcXgU3AJlaVEVNk2kS7icX3D4fairuVwd/+ovx4a+TPUkqEivwBGpwdWJsaWNfa2V5WCDF8UQyId+0Sa4pDRyp5qcC0UReYlKAbRKIgEBeJNGuHnN1bnRydXN0ZWRfcmF3X3ZhbHVlWGykY2ZlZaJjZ2FzGQPoZmFtb3VudEIQkmRib2R5omtiZW5lZmljaWFyeVUA8PesI5mFWUkMVHwStQ6Fieb4bsFtYW1vdW50X2NoYW5nZUID6GVub25jZQBmbWV0aG9kbXN0YWtpbmcuQWxsb3c=",
+   "signer_private_key": "d3hiwR2ERU9JVeWlBRaPKMLynzbdj1nEzwTDrbiyqknF8UQyId+0Sa4pDRyp5qcC0UReYlKAbRKIgEBeJNGuHg==",
+   "signer_public_key": "xfFEMiHftEmuKQ0cqeanAtFEXmJSgG0SiIBAXiTRrh4="
+  },
+  {
+   "signature_context": "oasis-core/consensus: tx for chain bc1c715319132305795fa86bd32e93291aaacbfb5b5955f3ba78bdba413af9e1",
+   "tx": {
+    "nonce": 0,
+    "fee": {
+     "amount": "4242",
+     "gas": 1000
+    },
+    "method": "staking.Allow",
+    "body": {
+     "beneficiary": "oasis1qrc00tprnxz4jjgv237p9dgwsky7d7rwcy7esxff",
+     "negative": true,
+     "amount_change": "1000"
+    }
+   },
+   "encoded_tx": "pGNmZWWiY2dhcxkD6GZhbW91bnRCEJJkYm9keaNobmVnYXRpdmX1a2JlbmVmaWNpYXJ5VQDw96wjmYVZSQxUfBK1DoWJ5vhuwW1hbW91bnRfY2hhbmdlQgPoZW5vbmNlAGZtZXRob2Rtc3Rha2luZy5BbGxvdw==",
+   "encoded_signed_tx": "omlzaWduYXR1cmWiaXNpZ25hdHVyZVhAkTGBjKD1XwLc09jmNyHggo94iPlaV6zaJurNqtmdwmGwjagaZvhSndkT1dxsHWnOnq5Z+NDmwl4eeQ+C0G2zCGpwdWJsaWNfa2V5WCDF8UQyId+0Sa4pDRyp5qcC0UReYlKAbRKIgEBeJNGuHnN1bnRydXN0ZWRfcmF3X3ZhbHVlWHakY2ZlZaJjZ2FzGQPoZmFtb3VudEIQkmRib2R5o2huZWdhdGl2ZfVrYmVuZWZpY2lhcnlVAPD3rCOZhVlJDFR8ErUOhYnm+G7BbWFtb3VudF9jaGFuZ2VCA+hlbm9uY2UAZm1ldGhvZG1zdGFraW5nLkFsbG93",
+   "signer_private_key": "d3hiwR2ERU9JVeWlBRaPKMLynzbdj1nEzwTDrbiyqknF8UQyId+0Sa4pDRyp5qcC0UReYlKAbRKIgEBeJNGuHg==",
+   "signer_public_key": "xfFEMiHftEmuKQ0cqeanAtFEXmJSgG0SiIBAXiTRrh4="
+  },
+  {
+   "signature_context": "oasis-core/consensus: tx for chain bc1c715319132305795fa86bd32e93291aaacbfb5b5955f3ba78bdba413af9e1",
+   "tx": {
+    "nonce": 0,
+    "fee": {
+     "amount": "4242",
+     "gas": 1000
+    },
+    "method": "staking.Allow",
+    "body": {
+     "beneficiary": "oasis1qrc00tprnxz4jjgv237p9dgwsky7d7rwcy7esxff",
+     "amount_change": "10000000"
+    }
+   },
+   "encoded_tx": "pGNmZWWiY2dhcxkD6GZhbW91bnRCEJJkYm9keaJrYmVuZWZpY2lhcnlVAPD3rCOZhVlJDFR8ErUOhYnm+G7BbWFtb3VudF9jaGFuZ2VDmJaAZW5vbmNlAGZtZXRob2Rtc3Rha2luZy5BbGxvdw==",
+   "encoded_signed_tx": "omlzaWduYXR1cmWiaXNpZ25hdHVyZVhAq6BeKtYxTBDaTFOlQ85mpHu1e1jGwpN4eR2tVCuBHSiqkghFINNgKq4sxQIRDKgKcvM4nQAMH03J1F+7vONQC2pwdWJsaWNfa2V5WCDF8UQyId+0Sa4pDRyp5qcC0UReYlKAbRKIgEBeJNGuHnN1bnRydXN0ZWRfcmF3X3ZhbHVlWG2kY2ZlZaJjZ2FzGQPoZmFtb3VudEIQkmRib2R5omtiZW5lZmljaWFyeVUA8PesI5mFWUkMVHwStQ6Fieb4bsFtYW1vdW50X2NoYW5nZUOYloBlbm9uY2UAZm1ldGhvZG1zdGFraW5nLkFsbG93",
+   "signer_private_key": "d3hiwR2ERU9JVeWlBRaPKMLynzbdj1nEzwTDrbiyqknF8UQyId+0Sa4pDRyp5qcC0UReYlKAbRKIgEBeJNGuHg==",
+   "signer_public_key": "xfFEMiHftEmuKQ0cqeanAtFEXmJSgG0SiIBAXiTRrh4="
+  },
+  {
+   "signature_context": "oasis-core/consensus: tx for chain bc1c715319132305795fa86bd32e93291aaacbfb5b5955f3ba78bdba413af9e1",
+   "tx": {
+    "nonce": 0,
+    "fee": {
+     "amount": "4242",
+     "gas": 1000
+    },
+    "method": "staking.Allow",
+    "body": {
+     "beneficiary": "oasis1qrc00tprnxz4jjgv237p9dgwsky7d7rwcy7esxff",
+     "negative": true,
+     "amount_change": "10000000"
+    }
+   },
+   "encoded_tx": "pGNmZWWiY2dhcxkD6GZhbW91bnRCEJJkYm9keaNobmVnYXRpdmX1a2JlbmVmaWNpYXJ5VQDw96wjmYVZSQxUfBK1DoWJ5vhuwW1hbW91bnRfY2hhbmdlQ5iWgGVub25jZQBmbWV0aG9kbXN0YWtpbmcuQWxsb3c=",
+   "encoded_signed_tx": "omlzaWduYXR1cmWiaXNpZ25hdHVyZVhAVnS0pJ9MFWv0EYbIoFL3Ka+hL2hcaahDtSaErraGec1E0qPXDZXreTZWXKeqiBggQUVJj84XmOY8DAi6bmW+DmpwdWJsaWNfa2V5WCDF8UQyId+0Sa4pDRyp5qcC0UReYlKAbRKIgEBeJNGuHnN1bnRydXN0ZWRfcmF3X3ZhbHVlWHekY2ZlZaJjZ2FzGQPoZmFtb3VudEIQkmRib2R5o2huZWdhdGl2ZfVrYmVuZWZpY2lhcnlVAPD3rCOZhVlJDFR8ErUOhYnm+G7BbWFtb3VudF9jaGFuZ2VDmJaAZW5vbmNlAGZtZXRob2Rtc3Rha2luZy5BbGxvdw==",
+   "signer_private_key": "d3hiwR2ERU9JVeWlBRaPKMLynzbdj1nEzwTDrbiyqknF8UQyId+0Sa4pDRyp5qcC0UReYlKAbRKIgEBeJNGuHg==",
+   "signer_public_key": "xfFEMiHftEmuKQ0cqeanAtFEXmJSgG0SiIBAXiTRrh4="
+  },
+  {
+   "signature_context": "oasis-core/consensus: tx for chain bc1c715319132305795fa86bd32e93291aaacbfb5b5955f3ba78bdba413af9e1",
+   "tx": {
+    "nonce": 10,
+    "fee": {
+     "amount": "4242",
+     "gas": 1000
+    },
+    "method": "staking.Allow",
+    "body": {
+     "beneficiary": "oasis1qrc00tprnxz4jjgv237p9dgwsky7d7rwcy7esxff",
+     "amount_change": "0"
+    }
+   },
+   "encoded_tx": "pGNmZWWiY2dhcxkD6GZhbW91bnRCEJJkYm9keaJrYmVuZWZpY2lhcnlVAPD3rCOZhVlJDFR8ErUOhYnm+G7BbWFtb3VudF9jaGFuZ2VAZW5vbmNlCmZtZXRob2Rtc3Rha2luZy5BbGxvdw==",
+   "encoded_signed_tx": "omlzaWduYXR1cmWiaXNpZ25hdHVyZVhAQa+ejCatO598wNIEfQOIJ5rZbyGk6kF4aetwbcC1ss7Bsa1+BZqLFa+ZxIiXQwAUDg2wVOzLA/MikjrAwxOxA2pwdWJsaWNfa2V5WCDF8UQyId+0Sa4pDRyp5qcC0UReYlKAbRKIgEBeJNGuHnN1bnRydXN0ZWRfcmF3X3ZhbHVlWGqkY2ZlZaJjZ2FzGQPoZmFtb3VudEIQkmRib2R5omtiZW5lZmljaWFyeVUA8PesI5mFWUkMVHwStQ6Fieb4bsFtYW1vdW50X2NoYW5nZUBlbm9uY2UKZm1ldGhvZG1zdGFraW5nLkFsbG93",
+   "signer_private_key": "d3hiwR2ERU9JVeWlBRaPKMLynzbdj1nEzwTDrbiyqknF8UQyId+0Sa4pDRyp5qcC0UReYlKAbRKIgEBeJNGuHg==",
+   "signer_public_key": "xfFEMiHftEmuKQ0cqeanAtFEXmJSgG0SiIBAXiTRrh4="
+  },
+  {
+   "signature_context": "oasis-core/consensus: tx for chain bc1c715319132305795fa86bd32e93291aaacbfb5b5955f3ba78bdba413af9e1",
+   "tx": {
+    "nonce": 10,
+    "fee": {
+     "amount": "4242",
+     "gas": 1000
+    },
+    "method": "staking.Allow",
+    "body": {
+     "beneficiary": "oasis1qrc00tprnxz4jjgv237p9dgwsky7d7rwcy7esxff",
+     "negative": true,
+     "amount_change": "0"
+    }
+   },
+   "encoded_tx": "pGNmZWWiY2dhcxkD6GZhbW91bnRCEJJkYm9keaNobmVnYXRpdmX1a2JlbmVmaWNpYXJ5VQDw96wjmYVZSQxUfBK1DoWJ5vhuwW1hbW91bnRfY2hhbmdlQGVub25jZQpmbWV0aG9kbXN0YWtpbmcuQWxsb3c=",
+   "encoded_signed_tx": "omlzaWduYXR1cmWiaXNpZ25hdHVyZVhAZ56hVZSfCKHVfz6qXwF9B27nXsvZnWJqowysRSSNHVY1aGWgyd/CKaaFzIu6gU84yRhM9JbYbcI6Hq5HmoqhAGpwdWJsaWNfa2V5WCDF8UQyId+0Sa4pDRyp5qcC0UReYlKAbRKIgEBeJNGuHnN1bnRydXN0ZWRfcmF3X3ZhbHVlWHSkY2ZlZaJjZ2FzGQPoZmFtb3VudEIQkmRib2R5o2huZWdhdGl2ZfVrYmVuZWZpY2lhcnlVAPD3rCOZhVlJDFR8ErUOhYnm+G7BbWFtb3VudF9jaGFuZ2VAZW5vbmNlCmZtZXRob2Rtc3Rha2luZy5BbGxvdw==",
+   "signer_private_key": "d3hiwR2ERU9JVeWlBRaPKMLynzbdj1nEzwTDrbiyqknF8UQyId+0Sa4pDRyp5qcC0UReYlKAbRKIgEBeJNGuHg==",
+   "signer_public_key": "xfFEMiHftEmuKQ0cqeanAtFEXmJSgG0SiIBAXiTRrh4="
+  },
+  {
+   "signature_context": "oasis-core/consensus: tx for chain bc1c715319132305795fa86bd32e93291aaacbfb5b5955f3ba78bdba413af9e1",
+   "tx": {
+    "nonce": 10,
+    "fee": {
+     "amount": "4242",
+     "gas": 1000
+    },
+    "method": "staking.Allow",
+    "body": {
+     "beneficiary": "oasis1qrc00tprnxz4jjgv237p9dgwsky7d7rwcy7esxff",
+     "amount_change": "1000"
+    }
+   },
+   "encoded_tx": "pGNmZWWiY2dhcxkD6GZhbW91bnRCEJJkYm9keaJrYmVuZWZpY2lhcnlVAPD3rCOZhVlJDFR8ErUOhYnm+G7BbWFtb3VudF9jaGFuZ2VCA+hlbm9uY2UKZm1ldGhvZG1zdGFraW5nLkFsbG93",
+   "encoded_signed_tx": "omlzaWduYXR1cmWiaXNpZ25hdHVyZVhAm/eYd0BGNNtipko8hgwXyjGk0SE/uRztoSjOx82sbYeC8qA3Jlhr/JXMV6GJHKi7RudgX+MRfHudr/OONVheB2pwdWJsaWNfa2V5WCDF8UQyId+0Sa4pDRyp5qcC0UReYlKAbRKIgEBeJNGuHnN1bnRydXN0ZWRfcmF3X3ZhbHVlWGykY2ZlZaJjZ2FzGQPoZmFtb3VudEIQkmRib2R5omtiZW5lZmljaWFyeVUA8PesI5mFWUkMVHwStQ6Fieb4bsFtYW1vdW50X2NoYW5nZUID6GVub25jZQpmbWV0aG9kbXN0YWtpbmcuQWxsb3c=",
+   "signer_private_key": "d3hiwR2ERU9JVeWlBRaPKMLynzbdj1nEzwTDrbiyqknF8UQyId+0Sa4pDRyp5qcC0UReYlKAbRKIgEBeJNGuHg==",
+   "signer_public_key": "xfFEMiHftEmuKQ0cqeanAtFEXmJSgG0SiIBAXiTRrh4="
+  },
+  {
+   "signature_context": "oasis-core/consensus: tx for chain bc1c715319132305795fa86bd32e93291aaacbfb5b5955f3ba78bdba413af9e1",
+   "tx": {
+    "nonce": 10,
+    "fee": {
+     "amount": "4242",
+     "gas": 1000
+    },
+    "method": "staking.Allow",
+    "body": {
+     "beneficiary": "oasis1qrc00tprnxz4jjgv237p9dgwsky7d7rwcy7esxff",
+     "negative": true,
+     "amount_change": "1000"
+    }
+   },
+   "encoded_tx": "pGNmZWWiY2dhcxkD6GZhbW91bnRCEJJkYm9keaNobmVnYXRpdmX1a2JlbmVmaWNpYXJ5VQDw96wjmYVZSQxUfBK1DoWJ5vhuwW1hbW91bnRfY2hhbmdlQgPoZW5vbmNlCmZtZXRob2Rtc3Rha2luZy5BbGxvdw==",
+   "encoded_signed_tx": "omlzaWduYXR1cmWiaXNpZ25hdHVyZVhAPe+Qa5MseuLMcRStwyflKs+brohfvp8+6x8H7YlfxdJ3zib45ZSIDvtU19fW38OIbMrfwBZ81UD+R8KkExA4CGpwdWJsaWNfa2V5WCDF8UQyId+0Sa4pDRyp5qcC0UReYlKAbRKIgEBeJNGuHnN1bnRydXN0ZWRfcmF3X3ZhbHVlWHakY2ZlZaJjZ2FzGQPoZmFtb3VudEIQkmRib2R5o2huZWdhdGl2ZfVrYmVuZWZpY2lhcnlVAPD3rCOZhVlJDFR8ErUOhYnm+G7BbWFtb3VudF9jaGFuZ2VCA+hlbm9uY2UKZm1ldGhvZG1zdGFraW5nLkFsbG93",
+   "signer_private_key": "d3hiwR2ERU9JVeWlBRaPKMLynzbdj1nEzwTDrbiyqknF8UQyId+0Sa4pDRyp5qcC0UReYlKAbRKIgEBeJNGuHg==",
+   "signer_public_key": "xfFEMiHftEmuKQ0cqeanAtFEXmJSgG0SiIBAXiTRrh4="
+  },
+  {
+   "signature_context": "oasis-core/consensus: tx for chain bc1c715319132305795fa86bd32e93291aaacbfb5b5955f3ba78bdba413af9e1",
+   "tx": {
+    "nonce": 10,
+    "fee": {
+     "amount": "4242",
+     "gas": 1000
+    },
+    "method": "staking.Allow",
+    "body": {
+     "beneficiary": "oasis1qrc00tprnxz4jjgv237p9dgwsky7d7rwcy7esxff",
+     "amount_change": "10000000"
+    }
+   },
+   "encoded_tx": "pGNmZWWiY2dhcxkD6GZhbW91bnRCEJJkYm9keaJrYmVuZWZpY2lhcnlVAPD3rCOZhVlJDFR8ErUOhYnm+G7BbWFtb3VudF9jaGFuZ2VDmJaAZW5vbmNlCmZtZXRob2Rtc3Rha2luZy5BbGxvdw==",
+   "encoded_signed_tx": "omlzaWduYXR1cmWiaXNpZ25hdHVyZVhA2D8YS1a5fdt5b92zGfddLQYdvJ4EIg2OUqpdOELvumfmmnccA9qvjkHLBD6rZ8bn9UksKWDlQ7Mnxndcf4GqCGpwdWJsaWNfa2V5WCDF8UQyId+0Sa4pDRyp5qcC0UReYlKAbRKIgEBeJNGuHnN1bnRydXN0ZWRfcmF3X3ZhbHVlWG2kY2ZlZaJjZ2FzGQPoZmFtb3VudEIQkmRib2R5omtiZW5lZmljaWFyeVUA8PesI5mFWUkMVHwStQ6Fieb4bsFtYW1vdW50X2NoYW5nZUOYloBlbm9uY2UKZm1ldGhvZG1zdGFraW5nLkFsbG93",
+   "signer_private_key": "d3hiwR2ERU9JVeWlBRaPKMLynzbdj1nEzwTDrbiyqknF8UQyId+0Sa4pDRyp5qcC0UReYlKAbRKIgEBeJNGuHg==",
+   "signer_public_key": "xfFEMiHftEmuKQ0cqeanAtFEXmJSgG0SiIBAXiTRrh4="
+  },
+  {
+   "signature_context": "oasis-core/consensus: tx for chain bc1c715319132305795fa86bd32e93291aaacbfb5b5955f3ba78bdba413af9e1",
+   "tx": {
+    "nonce": 10,
+    "fee": {
+     "amount": "4242",
+     "gas": 1000
+    },
+    "method": "staking.Allow",
+    "body": {
+     "beneficiary": "oasis1qrc00tprnxz4jjgv237p9dgwsky7d7rwcy7esxff",
+     "negative": true,
+     "amount_change": "10000000"
+    }
+   },
+   "encoded_tx": "pGNmZWWiY2dhcxkD6GZhbW91bnRCEJJkYm9keaNobmVnYXRpdmX1a2JlbmVmaWNpYXJ5VQDw96wjmYVZSQxUfBK1DoWJ5vhuwW1hbW91bnRfY2hhbmdlQ5iWgGVub25jZQpmbWV0aG9kbXN0YWtpbmcuQWxsb3c=",
+   "encoded_signed_tx": "omlzaWduYXR1cmWiaXNpZ25hdHVyZVhAaT4ejZwnxvw5FyZVROaqtbUp0rXD/vQS1NKQzvgeuyBPvgfg4I0dauqnbXmFpG648RkJ7IIvb480tBN5+u+IC2pwdWJsaWNfa2V5WCDF8UQyId+0Sa4pDRyp5qcC0UReYlKAbRKIgEBeJNGuHnN1bnRydXN0ZWRfcmF3X3ZhbHVlWHekY2ZlZaJjZ2FzGQPoZmFtb3VudEIQkmRib2R5o2huZWdhdGl2ZfVrYmVuZWZpY2lhcnlVAPD3rCOZhVlJDFR8ErUOhYnm+G7BbWFtb3VudF9jaGFuZ2VDmJaAZW5vbmNlCmZtZXRob2Rtc3Rha2luZy5BbGxvdw==",
+   "signer_private_key": "d3hiwR2ERU9JVeWlBRaPKMLynzbdj1nEzwTDrbiyqknF8UQyId+0Sa4pDRyp5qcC0UReYlKAbRKIgEBeJNGuHg==",
+   "signer_public_key": "xfFEMiHftEmuKQ0cqeanAtFEXmJSgG0SiIBAXiTRrh4="
+  }
+ ]
+}

@@ -1,0 +1,37 @@
+{
+ "source": "https://github.com/oasisprotocol/oasis-sdk/blob/d1ed1c553859bd37fc4f13dd201b5384ef706877/client-sdk/ts-web/core/test/adr-0008-vectors.json",
+ "license": "Apache-2.0",
+ "note": "Public test mnemonics only. First account (m/44'/474'/0') of each vector without a BIP-39 passphrase.",
+ "vectors": [
+  {
+   "mnemonic": "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about",
+   "path": "m/44'/474'/0'",
+   "public_key": "ad55bbb7c192b8ecfeb6ad18bbd7681c0923f472d5b0c212fbde33008005ad61",
+   "address": "oasis1qqx0wgxjwlw3jwatuwqj6582hdm9rjs4pcnvzz66"
+  },
+  {
+   "mnemonic": "equip will roof matter pink blind book anxiety banner elbow sun young",
+   "path": "m/44'/474'/0'",
+   "public_key": "45601f761af17dba50243529e629732f1c58d08ffddaa8491238540475729d85",
+   "address": "oasis1qqjkrr643qv7yzem6g4m8rrtceh42n46usfscpcf"
+  },
+  {
+   "mnemonic": "network want title crash employ twelve elegant unlock arrow marriage cat april",
+   "path": "m/44'/474'/0'",
+   "public_key": "747640555044f5c359911c0eda6d5e8cfbd6fe05bc8d94a25acd28e9f1eeb744",
+   "address": "oasis1qphafzljh9tl4wdv2pvhemhemgswh3fpa5cxllf3"
+  },
+  {
+   "mnemonic": "grape weapon help home entire invest warfare curious advance immense group vintage",
+   "path": "m/44'/474'/0'",
+   "public_key": "6c6caa571309e7a18ef2c107d34c1515ecab4430f57260a63359c6de60511377",
+   "address": "oasis1qqhxxqjpqddm8dsvvvphfxn8ke8xvll4asg068hy"
+  },
+  {
+   "mnemonic": "vibrant length learn peanut garlic boil battle jeans fan cliff alone round setup dove shoe twist dumb trophy imitate coil team grocery when else",
+   "path": "m/44'/474'/0'",
+   "public_key": "6f9a0bf931842fe6c339d318e82df42deee9edb39d94921756ab5c8f57fba4bc",
+   "address": "oasis1qrwn7cmvaaas7ec27z4ct224cjk9jv5elyqfde8f"
+  }
+ ]
+}

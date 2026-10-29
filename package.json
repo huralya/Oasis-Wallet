@@ -1,0 +1,9 @@
+{
+  "name": "oasis-wallet",
+  "private": true,
+  "type": "module",
+  "description": "Development scripts only. The extension itself has no dependencies.",
+  "scripts": {
+    "test": "node --test test/*.test.mjs"
+  }
+}

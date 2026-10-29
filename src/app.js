@@ -16,8 +16,10 @@ import {
   isMainnet,
   explorerTxUrl,
   explorerAddressUrl,
+  pairedNetwork,
 } from './networks.js';
 import {
+  CONSENSUS_DECIMALS,
   fetchBalance,
   fetchActivity,
   prepareTransfer,
@@ -25,6 +27,12 @@ import {
   recipientRoute,
   validateRecipient,
   estimateMaxSendable,
+  moveDirection,
+  validateMoveDestination,
+  prepareMove,
+  submitMove,
+  waitForMove,
+  estimateMaxMove,
 } from './chain.js';
 import * as store from './store.js';
 
@@ -52,8 +60,10 @@ const state = {
   draft: { to: '', amount: '' },
   pending: null,
   result: null,
+  moveDraft: { to: '', amount: '', custom: false },
+  movePending: null,
+  moveStatus: null,
   secret: null,
-  receiveFormat: 'native',
   editWalletId: null,
   busy: false,
 };
@@ -74,8 +84,16 @@ const short = (a, left = 8, right = 6) =>
 const net = () => NETWORKS[state.network];
 const wallet = () => state.keyring?.active;
 const accounts = () => wallet()?.accounts;
+// Each layer has exactly one user-facing address: Sapphire (an EVM ParaTime)
+// uses the 0x address, Consensus uses the Ed25519 oasis1 address. The oasis1
+// form of a Sapphire account is never shown as an address to receive on: ROSE
+// sent to it on Consensus could not be moved, because its key is secp256k1.
 const primaryAddress = (w = wallet(), n = net()) =>
-  n.kind === 'sapphire' ? w?.accounts.sapphireNative : w?.accounts.consensus;
+  n.kind === 'sapphire' ? w?.accounts.eth : w?.accounts.consensus;
+const ownAddressOn = (n, w = wallet()) => primaryAddress(w, n);
+const formatName = (n) => (n.kind === 'sapphire' ? '0x' : 'oasis1');
+const layerTag = (n) =>
+  `<span class="layer-tag ${n.kind}"><span class="net-dot"></span>${n.layer} · ${formatName(n)}</span>`;
 
 function groupDigits(whole) {
   return whole.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
@@ -231,7 +249,7 @@ function welcomeView() {
     </div>
     <ul class="features">
       <li>${icon('shield')}<span><b>Self-custody</b><small>Your keys are encrypted and never leave this device.</small></span></li>
-      <li>${icon('layers')}<span><b>Sapphire &amp; Consensus</b><small>Native oasis1 and EVM 0x addresses in one place.</small></span></li>
+      <li>${icon('layers')}<span><b>Sapphire &amp; Consensus</b><small>A Sapphire 0x account and a Consensus oasis1 account, and moves between them.</small></span></li>
       <li>${icon('eyeOff')}<span><b>Private by design</b><small>No accounts, analytics or tracking.</small></span></li>
     </ul>
     <div class="welcome-actions">
@@ -455,18 +473,19 @@ function homeView() {
       <section class="balance-card ${n.kind}">
         <div class="bc-glow"></div><img class="bc-mark" src="../assets/oasis-mark.svg" alt="">
         <div class="bc-top">
-          <span class="bc-label">${n.layer} balance</span>
+          <span class="bc-label">${n.layer} balance <span class="bc-kind">${n.kind === 'sapphire' ? 'EVM ParaTime' : 'Base layer'}</span></span>
           <span class="env-chip ${isMainnet(n) ? 'main' : 'test'}">${n.env}</span>
         </div>
         <div class="bc-amount ${state.balance.loading ? 'is-loading' : ''}" id="balance">${balanceHtml()}</div>
         <div class="bc-bottom">
-          <button type="button" class="bc-address" data-action="copy" data-value="${esc(address)}" title="Copy address">${esc(short(address, 10, 6))}${icon('copy')}</button>
+          <button type="button" class="bc-address" data-action="copy" data-value="${esc(address)}" title="Copy your ${n.layer} ${formatName(n)} address"><span class="bc-format">${formatName(n)}</span>${esc(short(address, 10, 6))}${icon('copy')}</button>
           <button type="button" class="bc-icon" data-action="toggle-hide" aria-label="${state.prefs.hideBalance ? 'Show balance' : 'Hide balance'}">${icon(state.prefs.hideBalance ? 'eyeOff' : 'eye')}</button>
         </div>
       </section>
       <nav class="actions">
         <button type="button" class="action" data-action="go" data-to="send"><span>${icon('send')}</span>Send</button>
         <button type="button" class="action" data-action="go" data-to="receive"><span>${icon('receive')}</span>Receive</button>
+        <button type="button" class="action" data-action="go-move" title="Move ROSE to ${esc(pairedNetwork(n).layer)}"><span>${icon('route')}</span>To ${esc(pairedNetwork(n).layer)}</button>
         <a class="action" href="${esc(explorerAddressUrl(n, address))}" target="_blank" rel="noopener noreferrer"><span>${icon('globe')}</span>Explorer</a>
       </nav>
       <section class="panel activity">
@@ -479,38 +498,32 @@ function homeView() {
 
 function receiveView() {
   const n = net(),
+    other = pairedNetwork(n),
     sapphire = n.kind === 'sapphire',
-    evm = sapphire && state.receiveFormat === 'evm',
-    address = evm ? accounts().eth : primaryAddress();
+    address = primaryAddress();
   let qr;
   try {
     qr = qrSvg(address, { scale: 6, margin: 2 });
   } catch {
     qr = '<div class="qr-fallback">QR unavailable</div>';
   }
-  const tabs = sapphire
-    ? `<div class="segmented" role="tablist">
-        <button type="button" role="tab" aria-selected="${!evm}" class="${evm ? '' : 'on'}" data-action="receive-format" data-format="native">Oasis · oasis1</button>
-        <button type="button" role="tab" aria-selected="${evm}" class="${evm ? 'on' : ''}" data-action="receive-format" data-format="evm">EVM · 0x</button>
-      </div>`
-    : '';
-  const note = evm
-    ? 'Use this 0x address with exchanges, bridges and EVM wallets that support Sapphire.'
-    : sapphire
-      ? 'Native Oasis address for this Sapphire account. Both formats receive into the same balance.'
-      : 'Your Oasis Consensus address. Use it for base-layer transfers and staking.';
+  const note = sapphire
+    ? `<b>Only send ${n.symbol} on the Sapphire network (EVM) to this 0x address.</b> Most exchanges withdraw ROSE on Consensus — send to your Consensus address and then use ‘Move to Sapphire’.`
+    : `<b>Only send ${n.symbol} on the Oasis Consensus layer to this oasis1 address.</b> Most exchanges withdraw ROSE on Consensus, so this is the address to give them. Sapphire and EVM wallets can’t send here — to use ROSE on Sapphire, receive it here and then use ‘Move to Sapphire’.`;
   return screen({
     title: 'Receive',
     right: networkPill(),
     body: `
-      ${tabs}
+      <div class="layer-banner ${n.kind}">${layerTag(n)}<span>${sapphire ? 'EVM ParaTime · 0x address' : 'Base layer · oasis1 address'}</span></div>
       <div class="qr-card">
         <div class="qr">${qr}<span class="qr-badge"><img src="../assets/oasis-mark.svg" alt=""></span></div>
-        <div class="qr-label">${n.layer} ${n.env} · ${evm ? 'EVM address' : 'Oasis address'}</div>
+        <div class="qr-label">${n.layer} ${n.env} · ${sapphire ? 'EVM address' : 'Consensus address'}</div>
         <div class="qr-address">${addressHtml(address)}</div>
         ${btn({ label: 'Copy address', action: 'copy', kind: 'soft', iconName: 'copy', cls: 'block', attrs: `data-value="${esc(address)}"` })}
       </div>
-      ${callout(isMainnet(n) ? 'info' : 'warn', isMainnet(n) ? 'info' : 'alert', isMainnet(n) ? esc(note) : `<b>Testnet address.</b> Only send ${n.symbol} test tokens on ${n.layer} Testnet.`)}`,
+      ${callout('warn', 'alert', note)}
+      ${isMainnet(n) ? '' : callout('warn', 'alert', `<b>Testnet address.</b> Only send ${n.symbol} test tokens on ${n.layer} Testnet.`)}
+      <button type="button" class="link-btn block-link" data-action="receive-other">Show my ${esc(other.layer)} ${formatName(other)} address instead ${icon('chevronRight')}</button>`,
   });
 }
 
@@ -526,12 +539,13 @@ function sendView() {
       <div class="from-card">
         ${avatar(wallet())}
         <span><b>${esc(wallet().name)}</b><small>${esc(short(primaryAddress(), 10, 6))}</small></span>
-        <span class="from-bal"><small>Available</small><b>${b == null ? '—' : fmt(b, n.decimals, 6)} ${n.symbol}</b></span>
+        <span class="from-bal"><small>Available</small><b><span data-live-balance>${b == null ? '—' : fmt(b, n.decimals, 6)}</span> ${n.symbol}</b></span>
       </div>
+      <div class="layer-banner ${n.kind}">${layerTag(n)}<span>${n.kind === 'sapphire' ? 'Sends to 0x addresses on Sapphire' : 'Sends to oasis1 addresses on Consensus'}</span></div>
       ${isMainnet(n) ? callout('danger', 'alert', `<b>${n.layer} Mainnet.</b> This transfer moves real ROSE and cannot be reversed.`) : ''}
       <div class="field">
         <label class="label" for="to">Recipient</label>
-        <div class="control"><textarea id="to" name="to" class="input mono recipient" rows="2" spellcheck="false" autocapitalize="off" autocomplete="off" data-input="recipient" placeholder="${n.kind === 'sapphire' ? 'oasis1… or 0x… address' : 'oasis1… address'}">${esc(state.draft.to)}</textarea></div>
+        <div class="control"><textarea id="to" name="to" class="input mono recipient" rows="2" spellcheck="false" autocapitalize="off" autocomplete="off" data-input="recipient" placeholder="${n.kind === 'sapphire' ? '0x… address on Sapphire' : 'oasis1… address on Consensus'}">${esc(state.draft.to)}</textarea></div>
         <div class="hint" id="routeHint">${routeHint}</div>
       </div>
       <div class="field">
@@ -551,18 +565,18 @@ function routeHintHtml(to) {
     route = recipientRoute(n, to);
   if (!route)
     return n.kind === 'sapphire'
-      ? 'Send to a native oasis1 address or an EVM 0x address.'
-      : 'Send to an Oasis Consensus oasis1 address.';
+      ? 'Send to a 0x address on Sapphire.'
+      : 'Send to an oasis1 address on Oasis Consensus.';
   if (route === 'invalid')
-    return `<span class="bad">${n.kind === 'sapphire' ? 'Use an oasis1… or 0x… address' : 'Consensus only supports oasis1… addresses'}</span>`;
+    return `<span class="bad">${n.kind === 'sapphire' ? 'Sapphire sends need a 0x… address' : 'Consensus sends need an oasis1… address'}</span>`;
+  if (route === 'move') {
+    const other = pairedNetwork(n);
+    return `<span class="bad">${n.kind === 'sapphire' ? 'oasis1… addresses are on Consensus, not Sapphire.' : '0x… addresses are on Sapphire, not Consensus.'}</span>
+      <button type="button" class="hint-action" data-action="go-move" data-prefill="1">${icon('route')} Move to ${esc(other.layer)} instead</button>`;
+  }
   try {
     validateRecipient(n, accounts(), to);
-    const label = {
-      runtime: 'Native Oasis transfer',
-      evm: 'EVM transfer',
-      consensus: 'Consensus transfer',
-    }[route];
-    return `<span class="good">${icon('check')} ${label}</span>`;
+    return `<span class="good">${icon('check')} ${ROUTE_LABELS[route]}</span>`;
   } catch (e) {
     return String(to).trim().length >= (route === 'evm' ? 42 : 46)
       ? `<span class="bad">${esc(e.message)}</span>`
@@ -571,8 +585,7 @@ function routeHintHtml(to) {
 }
 
 const ROUTE_LABELS = {
-  runtime: 'Native Oasis transfer',
-  evm: 'EVM transfer',
+  evm: 'Sapphire transfer (EVM)',
   consensus: 'Consensus transfer',
 };
 
@@ -619,6 +632,182 @@ function resultView() {
     <div class="dock"><div class="dock-row">
       <a class="btn ghost" href="${esc(explorerTxUrl(n, r.hash))}" target="_blank" rel="noopener noreferrer">${icon('external')}<span>Explorer</span></a>
       ${btn({ label: 'Done', action: 'done' })}
+    </div></div>
+  </div>`;
+}
+
+// --- Screens: move between Consensus and Sapphire ---
+
+const MOVE_DECIMALS = CONSENSUS_DECIMALS;
+
+function moveEndpoint(n, address, own, label) {
+  return `<div class="move-end ${n.kind}">
+    <div class="move-end-head">${layerTag(n)}<small>${label}</small></div>
+    ${addressHtml(address)}
+    ${own ? `<span class="badge">Your ${esc(n.layer)} account</span>` : '<span class="badge warn">Another address</span>'}
+  </div>`;
+}
+
+function moveView() {
+  const n = net(),
+    target = pairedNetwork(n),
+    d = state.moveDraft,
+    deposit = moveDirection(n) === 'deposit',
+    own = ownAddressOn(target),
+    b = state.balance.value;
+  const destinationBlock = d.custom
+    ? `<div class="field">
+        <label class="label" for="moveTo">Destination on ${esc(target.layer)}</label>
+        <div class="control"><textarea id="moveTo" name="moveTo" class="input mono recipient" rows="2" spellcheck="false" autocapitalize="off" autocomplete="off" data-input="move-to" placeholder="${deposit ? '0x… address on Sapphire' : 'oasis1… address on Consensus'}">${esc(d.to)}</textarea></div>
+        <div class="hint" id="moveHint">${moveHintHtml(d.to)}</div>
+      </div>
+      <button type="button" class="link-btn" data-action="move-own">Use my own ${esc(target.layer)} account</button>`
+    : `${moveEndpoint(target, own, true, 'To')}
+      <button type="button" class="link-btn" data-action="move-custom">Send to a different ${formatName(target)} address</button>`;
+  return screen({
+    title: `Move to ${target.layer}`,
+    right: networkPill(),
+    form: 'move',
+    body: `
+      <p class="lead">${
+        deposit
+          ? 'Move ROSE from your Consensus account into Sapphire, where EVM apps and wallets can use it.'
+          : 'Move ROSE from Sapphire back to Consensus, the layer exchanges and staking use.'
+      }</p>
+      <div class="move-route">
+        ${moveEndpoint(n, primaryAddress(), true, `From · <span data-live-balance>${b == null ? '—' : fmt(b, n.decimals, 6)}</span> ${n.symbol} available`)}
+        <div class="move-arrow">${icon('route')}</div>
+        ${destinationBlock}
+      </div>
+      <div class="field">
+        <label class="label" for="moveAmount">Amount</label>
+        <div class="control amount has-suffix">
+          <input id="moveAmount" name="moveAmount" class="input" inputmode="decimal" autocomplete="off" placeholder="0.00" value="${esc(d.amount)}" data-input="move-amount">
+          <span class="suffix"><span class="sym">${n.symbol}</span><button type="button" class="max" data-action="move-max">MAX</button></span>
+        </div>
+        <div class="hint">Up to ${MOVE_DECIMALS} decimal places, the precision of the Consensus layer.</div>
+      </div>
+      ${isMainnet(n) ? callout('danger', 'alert', `<b>${n.env}.</b> This moves real ROSE between layers.`) : ''}
+      ${formError()}`,
+    dock: btn({ label: 'Review', type: 'submit', cls: 'block' }),
+  });
+}
+
+function moveHintHtml(to) {
+  const n = net(),
+    target = pairedNetwork(n);
+  if (!String(to || '').trim())
+    return n.kind === 'consensus'
+      ? 'A Sapphire 0x address. oasis1 addresses are not accepted here.'
+      : 'A Consensus oasis1 address, for example an exchange deposit address.';
+  try {
+    validateMoveDestination(n, accounts(), to);
+    return `<span class="good">${icon('check')} ${esc(target.layer)} ${formatName(target)} address</span>`;
+  } catch (e) {
+    return String(to).trim().length >= (n.kind === 'consensus' ? 42 : 46)
+      ? `<span class="bad">${esc(e.message)}</span>`
+      : 'Keep typing…';
+  }
+}
+
+function moveReviewView() {
+  const p = state.movePending,
+    n = NETWORKS[p.network],
+    target = NETWORKS[p.target],
+    deposit = p.direction === 'deposit',
+    main = isMainnet(n);
+  const parts = amountParts(p.amount, MOVE_DECIMALS, 9);
+  const feeRows = deposit
+    ? `<div class="row"><span>1 · Allowance on Consensus</span><b>${!p.allow ? 'Already granted' : p.consensusFee === 0n ? 'Free' : `${fmt(p.consensusFee, n.decimals, 9)} ${n.symbol}`}</b></div>
+       <div class="row"><span>2 · Deposit on Sapphire</span><b>Free</b></div>`
+    : `<div class="row"><span>Network fee (Sapphire)</span><b>${fmt(p.runtimeFee, n.decimals, 9)} ${n.symbol}</b></div>`;
+  const total = deposit ? p.amount + p.consensusFee : p.runtimeAmount + p.runtimeFee;
+  const warnings = [];
+  if (!p.ownDestination)
+    warnings.push(
+      deposit
+        ? callout('warn', 'alert', '<b>Not your own account.</b> Check that the recipient controls this 0x address on Sapphire. A move cannot be reversed.')
+        : callout('warn', 'alert', '<b>Not your own account.</b> Make sure this is a Consensus address. Some exchanges do not credit ROSE that arrives directly from Sapphire — the safer route is to move to your own Consensus account first and send from there.'),
+    );
+  warnings.push(
+    callout(
+      'info',
+      'info',
+      deposit
+        ? `Sapphire first withdraws the amount from your Consensus account using the allowance, then credits ${esc(short(p.to, 8, 6))}. If that step fails, your ROSE stays on Consensus.`
+        : 'If the Consensus transfer fails, Sapphire refunds the amount to your Sapphire account. The network fee is not refunded.',
+    ),
+  );
+  return screen({
+    title: 'Review move',
+    cls: 'review',
+    form: 'move-confirm',
+    body: `
+      <div class="review-hero">
+        <small>You are moving</small>
+        <div class="review-amount">${parts.whole}<span>${parts.frac}</span> <em>${n.symbol}</em></div>
+        <span class="net-badge ${n.kind} ${main ? 'main' : 'test'}"><span class="net-dot"></span>${n.layer} → ${target.layer} · ${n.env}</span>
+      </div>
+      ${moveEndpoint(n, p.from, true, 'From')}
+      ${moveEndpoint(target, p.to, p.ownDestination, 'To')}
+      <div class="panel rows">
+        ${feeRows}
+        <div class="row"><span>Arrives on ${esc(target.layer)}</span><b>${fmt(p.amount, MOVE_DECIMALS, 9)} ${n.symbol}</b></div>
+        <div class="row"><span>Estimated arrival</span><b>Usually within a minute</b></div>
+        <div class="row total"><span>Total from ${esc(n.layer)}</span><b>${fmt(total, n.decimals, 9)} ${n.symbol}</b></div>
+      </div>
+      ${warnings.join('')}
+      ${main ? check('mainnetCheck', `I have checked the destination. I understand this moves <b>real ROSE</b> and can’t be undone.`, 'data-change="mainnet-confirm"') : callout('info', 'info', 'Testnet move — no real funds are involved.')}
+      ${callout('warn', 'alert', 'Keep this window open until the move has been submitted.')}
+      ${formError()}`,
+    dock: `<div class="dock-row">${btn({ label: 'Edit', action: 'back', kind: 'ghost' })}${btn({ label: 'Confirm & move', type: 'submit', attrs: main ? 'disabled id="confirmBtn"' : 'id="confirmBtn"' })}</div>`,
+  });
+}
+
+function moveStatusView() {
+  const s = state.moveStatus,
+    n = NETWORKS[s.network],
+    target = NETWORKS[s.target],
+    done = s.outcome != null;
+  const stepIcon = (st) =>
+    st === 'done'
+      ? icon('check')
+      : st === 'failed'
+        ? icon('alert')
+        : st === 'active'
+          ? '<span class="step-spin"></span>'
+          : '';
+  const steps = s.steps
+    .map(
+      (st) => `<li class="mstep ${st.state}"><span class="mstep-dot">${stepIcon(st.state)}</span><span class="mstep-text"><b>${esc(st.label)}</b>${st.detail ? `<small>${esc(st.detail)}</small>` : ''}</span></li>`,
+    )
+    .join('');
+  const heading = {
+    success: `Moved to ${target.layer}`,
+    failed: 'Move failed',
+    timeout: 'Still processing',
+  }[s.outcome] || `Moving to ${target.layer}…`;
+  const lead = {
+    success: `${fmt(s.amount, MOVE_DECIMALS, 9)} ${n.symbol} arrived on ${target.layer} ${target.env}.`,
+    failed: esc(s.error || 'The move could not be completed.'),
+    timeout:
+      'The move was submitted but its result has not appeared yet. Check the explorer in a few minutes before trying again.',
+  }[s.outcome] || 'This usually takes less than a minute.';
+  const hashRow = s.hash
+    ? `<div class="row"><span>Sapphire transaction</span><button type="button" class="copy-inline" data-action="copy" data-value="${esc(s.hash)}">${esc(short(s.hash, 10, 8))}${icon('copy')}</button></div>`
+    : '';
+  const sapphireNet = NETWORKS[s.direction === 'deposit' ? s.target : s.network];
+  return `<div class="screen result move-status">
+    <div class="scroll"><div class="content">
+      <div class="center-block">${s.outcome === 'success' ? '<div class="success-mark"><svg viewBox="0 0 52 52" aria-hidden="true"><circle cx="26" cy="26" r="24"/><path d="m15 27 7.5 7.5L38 19"/></svg></div>' : `<div class="gate-icon ${s.outcome === 'failed' ? 'danger' : ''}">${icon(s.outcome === 'failed' ? 'alert' : 'route')}</div>`}</div>
+      <h2 class="center">${esc(heading)}</h2>
+      <p class="lead center">${lead}</p>
+      <ol class="msteps">${steps}</ol>
+      ${hashRow ? `<div class="panel rows">${hashRow}</div>` : ''}
+    </div></div>
+    <div class="dock"><div class="dock-row">
+      ${s.hash ? `<a class="btn ghost" href="${esc(explorerTxUrl(sapphireNet, s.hash))}" target="_blank" rel="noopener noreferrer">${icon('external')}<span>Explorer</span></a>` : ''}
+      ${done ? (s.outcome === 'success' ? btn({ label: `Open ${target.layer}`, action: 'move-open-target' }) : btn({ label: 'Done', action: 'done' })) : s.hash ? btn({ label: 'Close', action: 'done', kind: 'soft' }) : btn({ label: 'Working…', attrs: 'disabled' })}
     </div></div>
   </div>`;
 }
@@ -734,10 +923,14 @@ function walletEditView() {
       <div class="center-block">${avatar(w, 'xl')}</div>
       ${field({ id: 'walletName', label: 'Name', value: w.name, attrs: 'maxlength="32"' })}
       <div class="panel rows">
-        <div class="row stack"><span>Sapphire</span><span class="addr small">${esc(w.accounts.sapphireNative)}</span></div>
-        <div class="row stack"><span>Sapphire EVM</span><span class="addr small">${esc(w.accounts.eth)}</span></div>
-        <div class="row stack"><span>Consensus</span><span class="addr small">${esc(w.accounts.consensus)}</span></div>
+        <div class="row stack"><span>Sapphire · 0x</span><span class="addr small">${esc(w.accounts.eth)}</span></div>
+        <div class="row stack"><span>Consensus · oasis1</span><span class="addr small">${esc(w.accounts.consensus)}</span></div>
       </div>
+      <details class="advanced">
+        <summary>Advanced: Sapphire native runtime address</summary>
+        <div class="callout danger">${icon('alert')}<div><b>Never send from an exchange or from Consensus to this address.</b> It is the internal ParaTime form of your Sapphire 0x account. ROSE sent to it on Consensus cannot be moved by this wallet or any other.</div></div>
+        <span class="addr small">${esc(w.accounts.sapphireNative)}</span>
+      </details>
       ${formError()}
       <button type="button" class="link-btn danger" data-action="open-modal" data-modal="remove-wallet" ${only ? 'disabled title="You need at least one wallet"' : ''}>${icon('trash')} Remove this wallet</button>`,
     dock: btn({ label: 'Save', type: 'submit', cls: 'block' }),
@@ -928,6 +1121,9 @@ const VIEWS = {
   send: sendView,
   review: reviewView,
   result: resultView,
+  move: moveView,
+  'move-review': moveReviewView,
+  'move-status': moveStatusView,
   settings: settingsView,
   wallets: walletsView,
   'wallet-edit': walletEditView,
@@ -952,6 +1148,9 @@ function render() {
   if (!SECRET_SCREENS.has(state.screen)) state.secret = null;
   if (state.screen !== 'review') state.pending = null;
   if (state.screen !== 'result') state.result = null;
+  if (state.screen !== 'move-review') state.movePending = null;
+  if (state.screen === 'move-review' && !state.movePending) state.screen = 'move';
+  if (state.screen === 'move-status' && !state.moveStatus) state.screen = 'home';
 
   const entering = lastRendered !== state.screen;
   const scrollTop = entering ? 0 : app.querySelector('.scroll')?.scrollTop || 0;
@@ -989,7 +1188,8 @@ function go(screenName, { replace = false } = {}) {
   state.sheet = null;
   state.modal = null;
   render();
-  if (screenName === 'home') refresh();
+  if (screenName === 'home' || (['send', 'move'].includes(screenName) && state.balance.value == null))
+    refresh();
 }
 
 function resetTo(screenName) {
@@ -1088,6 +1288,9 @@ async function refresh() {
     ),
   ]);
   if (token === loadToken && state.screen === 'home') patchHome();
+  if (token === loadToken && state.balance.value != null)
+    for (const el of app.querySelectorAll('[data-live-balance]'))
+      el.textContent = fmt(state.balance.value, n.decimals, 6);
 }
 
 function scheduleRefresh() {
@@ -1112,6 +1315,7 @@ async function lock() {
   state.keyring = null;
   resetData();
   state.draft = { to: '', amount: '' };
+  state.moveDraft = { to: '', amount: '', custom: false };
   await store.endSession();
   resetTo('unlock');
 }
@@ -1236,6 +1440,116 @@ function checkNewPassword(form) {
   return pw;
 }
 
+// --- Move runner ---
+
+let moveRun = 0;
+async function runMove(p, mnemonic) {
+  const n = NETWORKS[p.network],
+    target = NETWORKS[p.target],
+    deposit = p.direction === 'deposit',
+    run = ++moveRun;
+  const steps = [];
+  if (deposit && p.allow)
+    steps.push({
+      id: 'allow',
+      label: `Allow Sapphire to take ${fmt(p.amount, MOVE_DECIMALS, 9)} ${n.symbol}`,
+      detail: 'Consensus transaction',
+      state: 'pending',
+    });
+  steps.push({
+    id: 'submit',
+    label: deposit ? 'Submit the deposit to Sapphire' : 'Submit the withdrawal on Sapphire',
+    detail: 'Sapphire transaction',
+    state: 'pending',
+  });
+  steps.push({
+    id: 'arrive',
+    label: `Wait for ${n.symbol} to arrive on ${target.layer}`,
+    detail: 'Usually within a minute',
+    state: 'pending',
+  });
+  state.moveStatus = {
+    network: p.network,
+    target: p.target,
+    direction: p.direction,
+    amount: p.amount,
+    to: p.to,
+    steps,
+    hash: null,
+    outcome: null,
+    error: null,
+  };
+  state.movePending = null;
+  state.moveDraft = { to: '', amount: '', custom: false };
+  state.history = ['home'];
+  go('move-status', { replace: true });
+
+  const s = state.moveStatus;
+  const step = (id) => s.steps.find((x) => x.id === id);
+  const update = () => {
+    if (run === moveRun && state.screen === 'move-status') render();
+  };
+  const set = (id, value, detail) => {
+    const st = step(id);
+    if (!st) return;
+    st.state = value;
+    if (detail !== undefined) st.detail = detail;
+    update();
+  };
+
+  let current = deposit && p.allow ? 'allow' : 'submit';
+  try {
+    const result = await submitMove(n, p, mnemonic, (event, hash) => {
+      if (event === 'allow') set('allow', 'active');
+      if (event === 'allowed') {
+        set('allow', 'done', hash ? `Consensus transaction ${short(hash, 8, 6)}` : 'Allowance already in place');
+        current = 'submit';
+      }
+      if (event === 'submit') {
+        current = 'submit';
+        set('submit', 'active');
+      }
+      if (event === 'submitted') {
+        s.hash = hash;
+        set('submit', 'done');
+        current = 'arrive';
+        set('arrive', 'active');
+      }
+    });
+    resetData();
+    const outcome = await waitForMove(
+      NETWORKS[result.sapphire],
+      p.direction,
+      { from: result.from, nonce: result.nonce },
+      { isCancelled: () => run !== moveRun },
+    );
+    if (run !== moveRun) return;
+    if (outcome.status === 'success') {
+      set('arrive', 'done', `Received on ${target.layer}`);
+      s.outcome = 'success';
+    } else if (outcome.status === 'failed') {
+      set('arrive', 'failed', outcome.error);
+      s.outcome = 'failed';
+      s.error = deposit
+        ? `Sapphire could not withdraw the ROSE from your Consensus account (${outcome.error}). Your ROSE stayed on Consensus.`
+        : `The transfer to Consensus failed (${outcome.error}). Sapphire refunded the amount to your Sapphire account.`;
+    } else {
+      set('arrive', 'pending', 'No result yet');
+      s.outcome = 'timeout';
+    }
+  } catch (e) {
+    if (run !== moveRun) return;
+    set(current, 'failed', friendlyError(e, 'The network rejected the transaction.'));
+    s.outcome = 'failed';
+    s.error =
+      current === 'arrive'
+        ? friendlyError(e, 'Could not confirm the result.')
+        : `${friendlyError(e, 'The transaction could not be submitted.')} Check your activity on both layers before trying again${current === 'submit' && deposit && p.allow ? '; the allowance step may already be complete, which is safe' : ''}.`;
+  }
+  resetData();
+  update();
+}
+
 // --- Clipboard ---
 
 let clipboardTimer = null;
@@ -1324,10 +1638,11 @@ const actions = {
     if (NETWORKS[key] && key !== state.network) {
       state.network = key;
       state.draft = { to: '', amount: '' };
-      state.receiveFormat = 'native';
+      state.moveDraft = { to: '', amount: '', custom: false };
       resetData();
       await store.saveNetwork(key);
       if (['send', 'review'].includes(state.screen)) state.screen = 'send';
+      if (['move', 'move-review'].includes(state.screen)) state.screen = 'move';
       toast(`Switched to ${NETWORKS[key].layer} ${NETWORKS[key].env}`);
     }
     render();
@@ -1369,9 +1684,55 @@ const actions = {
   },
   refresh: () => refresh(),
   copy: (el) => copy(el.dataset.value, el.hasAttribute('data-sensitive')),
-  'receive-format': (el) => {
-    state.receiveFormat = el.dataset.format;
+  'receive-other': async () => {
+    const other = pairedNetwork(net());
+    state.network = other.key;
+    state.draft = { to: '', amount: '' };
+    state.moveDraft = { to: '', amount: '', custom: false };
+    resetData();
+    await store.saveNetwork(other.key);
     render();
+    toast(`Showing your ${other.layer} address`);
+  },
+  'go-move': (el) => {
+    const d = { to: '', amount: '', custom: false };
+    // From the send screen, carry over an address of the other layer's format.
+    if (el.dataset.prefill && state.draft.to) {
+      d.to = state.draft.to;
+      d.custom = d.to.toLowerCase() !== ownAddressOn(pairedNetwork(net())).toLowerCase();
+      d.amount = state.draft.amount;
+    }
+    state.moveDraft = d;
+    go('move');
+  },
+  'move-custom': () => {
+    state.moveDraft.custom = true;
+    render();
+    document.getElementById('moveTo')?.focus();
+  },
+  'move-own': () => {
+    state.moveDraft.custom = false;
+    state.moveDraft.to = '';
+    render();
+  },
+  'move-max': (el) =>
+    withBusy(el, async () => {
+      const n = net();
+      const max = await estimateMaxMove({ net: n, accounts: accounts(), mnemonic: wallet().mnemonic });
+      const input = document.getElementById('moveAmount');
+      input.value = formatUnits(max, MOVE_DECIMALS, MOVE_DECIMALS);
+      state.moveDraft.amount = input.value;
+      if (max === 0n) toast('Not enough balance to cover the network fee', 'error');
+    }),
+  'move-open-target': async () => {
+    const s = state.moveStatus;
+    if (s && NETWORKS[s.target] && state.network !== s.target) {
+      state.network = s.target;
+      await store.saveNetwork(s.target);
+    }
+    state.moveStatus = null;
+    resetData();
+    resetTo('home');
   },
   max: (el) =>
     withBusy(el, async () => {
@@ -1404,6 +1765,16 @@ const inputs = {
     const clean = el.value.replace(/,/g, '.').replace(/[^\d.]/g, '');
     if (clean !== el.value) el.value = clean;
     state.draft.amount = clean;
+  },
+  'move-to': (el) => {
+    if (/\s/.test(el.value)) el.value = el.value.replace(/\s+/g, '');
+    state.moveDraft.to = el.value.trim();
+    document.getElementById('moveHint').innerHTML = moveHintHtml(state.moveDraft.to);
+  },
+  'move-amount': (el) => {
+    const clean = el.value.replace(/,/g, '.').replace(/[^\d.]/g, '');
+    if (clean !== el.value) el.value = clean;
+    state.moveDraft.amount = clean;
   },
   strength: (el) => {
     const meter = document.getElementById('strength');
@@ -1544,6 +1915,47 @@ const forms = {
         if (button.isConnected) button.querySelector('span').textContent = 'Confirm & send';
         showError(form, friendlyError(e, 'The transaction could not be submitted.'));
       }
+    }),
+
+  move: (form, button) =>
+    withBusy(button, async () => {
+      clearError(form);
+      const n = net(),
+        d = state.moveDraft;
+      try {
+        const amountText = form.moveAmount.value.trim();
+        if (!amountText) throw new Error('Enter an amount.');
+        const amount = parseUnits(amountText, MOVE_DECIMALS);
+        d.amount = amountText;
+        if (d.custom) d.to = form.moveTo.value.trim();
+        const to = d.custom ? d.to : ownAddressOn(pairedNetwork(n));
+        const pending = await prepareMove({
+          net: n,
+          accounts: accounts(),
+          mnemonic: wallet().mnemonic,
+          to,
+          amount,
+        });
+        state.movePending = { ...pending, walletId: wallet().id };
+        go('move-review');
+      } catch (e) {
+        showError(form, friendlyError(e, 'Could not prepare the move. Check your connection.'));
+      }
+    }),
+
+  'move-confirm': (form, button) =>
+    withBusy(button, async () => {
+      clearError(form);
+      const p = state.movePending;
+      try {
+        if (!p || p.network !== state.network || p.walletId !== wallet().id)
+          throw new Error('The network or wallet changed. Review the move again.');
+        if (isMainnet(NETWORKS[p.network]) && !form.mainnetCheck?.checked)
+          throw new Error('Confirm that you have checked the destination.');
+      } catch (e) {
+        return showError(form, e.message);
+      }
+      runMove(p, wallet().mnemonic);
     }),
 
   reveal: (form, button) =>

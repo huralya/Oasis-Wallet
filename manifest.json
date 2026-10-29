@@ -2,8 +2,8 @@
   "manifest_version": 3,
   "name": "Oasis Wallet",
   "short_name": "Oasis Wallet",
-  "version": "0.4.0",
-  "description": "A native-first, non-custodial Oasis wallet for Sapphire and Consensus, developed by Huralya.",
+  "version": "0.5.0",
+  "description": "A non-custodial Oasis wallet for Sapphire (0x) and Consensus (oasis1), with moves between them. By Huralya.",
   "minimum_chrome_version": "137",
   "action": {
     "default_title": "Oasis Wallet",

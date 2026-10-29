@@ -368,7 +368,9 @@ export function loadWordlist() {
     const response = await fetch(new URL(BIP39_FILE, import.meta.url));
     if (!response.ok) throw new Error('Could not load the BIP-39 wordlist.');
     const raw = await response.text();
-    const normalized = raw.endsWith('\n') ? raw : raw + '\n';
+    // A checkout with CRLF line endings must not change the pinned hash.
+    const lf = raw.replace(/\r\n/g, '\n');
+    const normalized = lf.endsWith('\n') ? lf : lf + '\n';
     if (hex(await sha256(te.encode(normalized))) !== BIP39_SHA256)
       throw new Error('BIP-39 wordlist integrity check failed.');
     const list = normalized.trim().split(/\s+/);
@@ -655,15 +657,7 @@ async function deriveConsensusMaterial(seed) {
     sk = I.slice(0, 32);
     cc = I.slice(32);
   }
-  const prefix = Uint8Array.from([
-    0x30, 0x2e, 0x02, 0x01, 0x00, 0x30, 0x05, 0x06, 0x03, 0x2b, 0x65, 0x70, 0x04, 0x22, 0x04, 0x20,
-  ]);
-  const key = await crypto.subtle.importKey('pkcs8', cat(prefix, sk), { name: 'Ed25519' }, true, [
-    'sign',
-  ]);
-  const jwk = await crypto.subtle.exportKey('jwk', key),
-    publicKey = b64uToBytes(jwk.x);
-  return { seed: sk, key, publicKey };
+  return ed25519FromSeed(sk);
 }
 export async function deriveSigningMaterial(mnemonic) {
   const seed = await mnemonicSeed(mnemonic);
@@ -851,13 +845,118 @@ function decodeBech32(addr) {
   if (data.length !== 21 || data[0] !== 0) throw new Error('Invalid Oasis address.');
   return new Uint8Array(data);
 }
-export function buildConsensusTransfer({ to, amount, nonce, gas = 0n, feeAmount = 0n }) {
+// --- Addresses ---
+// Address derivation follows oasis-core `staking.NewAddress` and oasis-sdk
+// `runtime-sdk/src/types/address.rs`:
+// bech32("oasis", 0x00 || SHA512/256(context || 0x00 || data)[:20]).
+export const ADDRESS_CONTEXT_STAKING = 'oasis-core/address: staking';
+export const ADDRESS_CONTEXT_RUNTIME = 'oasis-core/address: runtime';
+export const ADDRESS_CONTEXT_SECP256K1ETH = 'oasis-runtime-sdk/address: secp256k1eth';
+
+export function decodeOasisAddress(address) {
+  return decodeBech32(address);
+}
+export function fromHex(value) {
+  const h = String(value || '').replace(/^0x/, '');
+  if (!h || h.length % 2 || !/^[0-9a-fA-F]+$/.test(h)) throw new Error('Invalid hex value');
+  return unhex(h);
+}
+// Consensus (and ParaTime) address of an Ed25519 public key.
+export function ed25519Address(publicKey) {
+  return oasisAddress(ADDRESS_CONTEXT_STAKING, publicKey);
+}
+// The native ParaTime address that holds the balance of a Sapphire 0x account
+// (runtime-sdk `Address::from_eth`). Its key is secp256k1, so it can never sign
+// a Consensus transaction: ROSE sent to it on Consensus is stuck.
+export function evmToRuntimeAddress(evmAddress) {
+  if (!isEvmAddress(evmAddress)) throw new Error('Invalid 0x address.');
+  return oasisAddress(ADDRESS_CONTEXT_SECP256K1ETH, unhex(evmAddress.slice(2)));
+}
+// The Consensus staking address of a ParaTime (runtime-sdk
+// `Address::from_runtime_id`). It is the beneficiary of the `staking.Allow`
+// that precedes a deposit.
+export function runtimeStakingAddress(runtimeId) {
+  return oasisAddress(ADDRESS_CONTEXT_RUNTIME, fromHex(runtimeId));
+}
+
+// --- Signature contexts ---
+// Consensus: oasis-core "oasis-core/consensus: tx" + " for chain " + chain context.
+export function consensusSignatureContext(chainContext) {
+  return `oasis-core/consensus: tx for chain ${chainContext}`;
+}
+// ParaTime: oasis-sdk `deriveChainContext` (client-sdk/ts-web/rt/src/transaction.ts)
+// = hex(SHA512/256(runtime_id || consensus_chain_context)).
+export function runtimeChainContext(runtimeId, consensusChainContext) {
+  return hex(sha512_256(cat(fromHex(runtimeId), te.encode(consensusChainContext))));
+}
+export function runtimeSignatureContext(runtimeId, consensusChainContext) {
+  return `oasis-runtime-sdk/tx: v0 for chain ${runtimeChainContext(runtimeId, consensusChainContext)}`;
+}
+
+// --- Consensus transactions ---
+// oasis-core `transaction.Transaction`: {nonce, fee: {amount, gas}, method, body}.
+// Quantities are big-endian byte strings without leading zeros (zero is empty).
+export function buildConsensusTx({ method, body, nonce, gas = 0n, feeAmount = 0n }) {
   return {
     nonce: BigInt(nonce),
     fee: { amount: bigintBytes(BigInt(feeAmount)), gas: BigInt(gas) },
+    method,
+    body,
+  };
+}
+export function buildConsensusTransfer({ to, amount, nonce, gas = 0n, feeAmount = 0n }) {
+  return buildConsensusTx({
     method: 'staking.Transfer',
     body: { to: decodeBech32(to), amount: bigintBytes(BigInt(amount)) },
+    nonce,
+    gas,
+    feeAmount,
+  });
+}
+// oasis-core `staking.Allow`: {beneficiary, negative (omitempty), amount_change}.
+export function buildStakingAllow({
+  beneficiary,
+  amountChange,
+  negative = false,
+  nonce,
+  gas = 0n,
+  feeAmount = 0n,
+}) {
+  const body = {
+    beneficiary: decodeBech32(beneficiary),
+    amount_change: bigintBytes(BigInt(amountChange)),
   };
+  if (negative) body.negative = true;
+  return buildConsensusTx({ method: 'staking.Allow', body, nonce, gas, feeAmount });
+}
+export async function ed25519FromSeed(seed) {
+  const prefix = Uint8Array.from([
+    0x30, 0x2e, 0x02, 0x01, 0x00, 0x30, 0x05, 0x06, 0x03, 0x2b, 0x65, 0x70, 0x04, 0x22, 0x04, 0x20,
+  ]);
+  const key = await crypto.subtle.importKey('pkcs8', cat(prefix, seed), { name: 'Ed25519' }, true, [
+    'sign',
+  ]);
+  const jwk = await crypto.subtle.exportKey('jwk', key);
+  return { seed, key, publicKey: b64uToBytes(jwk.x) };
+}
+// Ed25519 over SHA512/256(context || message), as oasis-core `PrepareSignerMessage`.
+async function ed25519SignWithContext(signer, context, message) {
+  const digest = sha512_256(cat(te.encode(context), message));
+  return new Uint8Array(await crypto.subtle.sign({ name: 'Ed25519' }, signer.key, digest));
+}
+export async function signConsensusTx(tx, signer, chainContext) {
+  const raw = cborEncode(tx);
+  const signature = await ed25519SignWithContext(
+    signer,
+    consensusSignatureContext(chainContext),
+    raw,
+  );
+  const signed = {
+    untrusted_raw_value: raw,
+    signature: { public_key: signer.publicKey, signature },
+  };
+  const encoded = cborEncode(signed);
+  return { signed, encoded, txHash: hex(sha512_256(encoded)) };
 }
 export async function getConsensusPublicKey(mnemonic) {
   const seed = await mnemonicSeed(mnemonic),
@@ -873,30 +972,31 @@ export async function signConsensusTransfer({
   feeAmount = 0n,
   chainContext,
 }) {
-  const seed = await mnemonicSeed(mnemonic),
-    m = await deriveConsensusMaterial(seed),
-    tx = buildConsensusTransfer({ to, amount, nonce, gas, feeAmount });
-  const raw = cborEncode(tx),
-    context = `oasis-core/consensus: tx for chain ${chainContext}`,
-    signerMessage = sha512_256(cat(te.encode(context), raw));
-  const signature = new Uint8Array(
-    await crypto.subtle.sign({ name: 'Ed25519' }, m.key, signerMessage),
+  const m = await deriveConsensusMaterial(await mnemonicSeed(mnemonic));
+  return signConsensusTx(
+    buildConsensusTransfer({ to, amount, nonce, gas, feeAmount }),
+    m,
+    chainContext,
   );
-  const signed = { untrusted_raw_value: raw, signature: { public_key: m.publicKey, signature } };
-  const encoded = cborEncode(signed),
-    txHash = hex(sha512_256(encoded));
-  return { signed, encoded, txHash };
+}
+export async function signStakingAllow({
+  mnemonic,
+  beneficiary,
+  amountChange,
+  nonce,
+  gas,
+  feeAmount = 0n,
+  chainContext,
+}) {
+  const m = await deriveConsensusMaterial(await mnemonicSeed(mnemonic));
+  return signConsensusTx(
+    buildStakingAllow({ beneficiary, amountChange, nonce, gas, feeAmount }),
+    m,
+    chainContext,
+  );
 }
 
-// --- Native Sapphire runtime transfers ---
-export function decodeOasisAddress(address) {
-  return decodeBech32(address);
-}
-export function fromHex(value) {
-  const h = String(value || '').replace(/^0x/, '');
-  if (!h || h.length % 2 || !/^[0-9a-fA-F]+$/.test(h)) throw new Error('Invalid hex value');
-  return unhex(h);
-}
+// --- ParaTime (runtime) transactions ---
 function derInt(n) {
   let b = bigToBytes(n, 32);
   let i = 0;
@@ -911,6 +1011,119 @@ function derSignature(r, s) {
     body = cat(rb, sb);
   return cat(new Uint8Array([0x30, body.length]), body);
 }
+// runtime-sdk `token::BaseUnits` is [amount, denomination]; the native denomination is empty.
+const baseUnits = (amount) => [bigintBytes(BigInt(amount)), new Uint8Array()];
+
+// runtime-sdk `consensus_accounts::types::{Deposit, Withdraw}`: {to (optional), amount}.
+// `amount` is in ParaTime base units (18 decimals on Sapphire).
+export function buildConsensusAccountsBody({ to, amount }) {
+  const body = { amount: baseUnits(amount) };
+  if (to) body.to = decodeBech32(to);
+  return body;
+}
+// runtime-sdk `types::transaction::Transaction` (v1). The fee fields `gas` and
+// `consensus_messages` are omitted when zero, as in the Go SDK's CBOR encoding.
+// `signer` is {ed25519: publicKey} or {secp256k1eth: compressedPublicKey}.
+export function buildRuntimeTx({
+  method,
+  body,
+  signer,
+  nonce,
+  gas = 0n,
+  feeAmount = 0n,
+  consensusMessages = 0,
+}) {
+  const fee = { amount: baseUnits(feeAmount) };
+  if (BigInt(gas) > 0n) fee.gas = BigInt(gas);
+  if (consensusMessages > 0) fee.consensus_messages = consensusMessages;
+  return {
+    v: 1,
+    call: { method, body },
+    ai: { si: [{ address_spec: { signature: signer }, nonce: BigInt(nonce) }], fee },
+  };
+}
+export function secp256k1PublicKey(privateKey) {
+  return pub(typeof privateKey === 'bigint' ? privateKey : bytesToBig(privateKey), true);
+}
+// Signs a runtime transaction. Ed25519 and secp256k1 both sign
+// SHA512/256(context || cbor(tx)); secp256k1 signatures are DER encoded
+// (runtime-sdk crypto/signature/secp256k1.rs, ts-web/rt signature_secp256k1.ts).
+// The result is `UnverifiedTransaction` = [cbor(tx), [{signature}]].
+export async function signRuntimeTx(tx, key, runtimeId, consensusChainContext) {
+  const raw = cborEncode(tx);
+  const context = runtimeSignatureContext(runtimeId, consensusChainContext);
+  let signature;
+  if (key.ed25519) signature = await ed25519SignWithContext(key.ed25519, context, raw);
+  else if (key.secp256k1 != null) {
+    const priv =
+      typeof key.secp256k1 === 'bigint' ? key.secp256k1 : bytesToBig(key.secp256k1);
+    const sig = await ecdsaSign(priv, sha512_256(cat(te.encode(context), raw)));
+    signature = derSignature(sig.r, sig.s);
+  } else throw new Error('Missing signing key');
+  const encoded = cborEncode([raw, [{ signature }]]);
+  return { tx, raw, encoded, txHash: hex(sha512_256(encoded)), context };
+}
+// Public keys used in `address_spec` for each account of a wallet.
+export async function getSignerSpecs(mnemonic) {
+  const { ethPrivate, consensus } = await deriveSigningMaterial(mnemonic);
+  return {
+    consensus: { ed25519: consensus.publicKey },
+    sapphire: { secp256k1eth: pub(ethPrivate, true) },
+  };
+}
+// Consensus -> ParaTime. The deposit is signed by the Consensus Ed25519 key:
+// consensus_accounts `tx_deposit` only accepts an Ed25519 signer
+// (`ensure_compatible_tx_signer`) and withdraws `amount` from the signer's
+// Consensus account through the allowance granted to the runtime.
+export async function signConsensusDeposit({
+  mnemonic,
+  to,
+  amount,
+  nonce,
+  gas,
+  feeAmount = 0n,
+  runtimeId,
+  consensusChainContext,
+}) {
+  const m = await deriveConsensusMaterial(await mnemonicSeed(mnemonic));
+  const tx = buildRuntimeTx({
+    method: 'consensus.Deposit',
+    body: buildConsensusAccountsBody({ to, amount }),
+    signer: { ed25519: m.publicKey },
+    nonce,
+    gas,
+    feeAmount,
+    consensusMessages: 1,
+  });
+  return signRuntimeTx(tx, { ed25519: m }, runtimeId, consensusChainContext);
+}
+// ParaTime -> Consensus, signed by the Sapphire secp256k1 key. `to` is always
+// set: without it the module rejects non-Ed25519 signers, because the funds
+// would land on a Consensus address nobody can sign for.
+export async function signConsensusWithdraw({
+  mnemonic,
+  to,
+  amount,
+  nonce,
+  gas,
+  feeAmount,
+  runtimeId,
+  consensusChainContext,
+}) {
+  if (!to) throw new Error('A Consensus destination is required.');
+  const { ethPrivate } = await deriveSigningMaterial(mnemonic);
+  const tx = buildRuntimeTx({
+    method: 'consensus.Withdraw',
+    body: buildConsensusAccountsBody({ to, amount }),
+    signer: { secp256k1eth: pub(ethPrivate, true) },
+    nonce,
+    gas,
+    feeAmount,
+    consensusMessages: 1,
+  });
+  return signRuntimeTx(tx, { secp256k1: ethPrivate }, runtimeId, consensusChainContext);
+}
+
 export async function exportWalletSecrets(mnemonic) {
   const { ethPrivate, consensus } = await deriveSigningMaterial(mnemonic);
   return {
@@ -918,44 +1131,4 @@ export async function exportWalletSecrets(mnemonic) {
     consensusPrivateSeed: '0x' + hex(consensus.seed),
     consensusPublicKey: '0x' + hex(consensus.publicKey),
   };
-}
-export async function signRuntimeTransfer({
-  mnemonic,
-  to,
-  amount,
-  nonce,
-  gas = 70000n,
-  feeAmount = 7000000n,
-  runtimeId,
-  consensusChainContext,
-}) {
-  const destination = decodeBech32(to);
-  const { ethPrivate } = await deriveSigningMaterial(mnemonic);
-  const publicKey = pub(ethPrivate, true);
-  const tx = {
-    v: 1,
-    call: {
-      method: 'accounts.Transfer',
-      body: { to: destination, amount: [bigintBytes(BigInt(amount)), new Uint8Array()] },
-    },
-    ai: {
-      si: [{ address_spec: { signature: { secp256k1eth: publicKey } }, nonce: BigInt(nonce) }],
-      fee: {
-        amount: [bigintBytes(BigInt(feeAmount)), new Uint8Array()],
-        gas: BigInt(gas),
-        consensus_messages: 0,
-      },
-    },
-  };
-  const raw = cborEncode(tx);
-  const runtimeID = fromHex(runtimeId);
-  const derivedChainContext = hex(sha512_256(cat(runtimeID, te.encode(consensusChainContext))));
-  const context = `oasis-runtime-sdk/tx: v0 for chain ${derivedChainContext}`;
-  const signerMessage = sha512_256(cat(te.encode(context), raw));
-  const sig = await ecdsaSign(ethPrivate, signerMessage);
-  const signature = derSignature(sig.r, sig.s);
-  const unverified = [raw, [{ signature }]];
-  const encoded = cborEncode(unverified);
-  const txHash = hex(sha512_256(encoded));
-  return { tx, raw, unverified, encoded, txHash, publicKey, derivedChainContext };
 }

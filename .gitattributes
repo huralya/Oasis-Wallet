@@ -1,0 +1,6 @@
+# Keep LF line endings on every platform. The BIP-39 wordlist is pinned by
+# SHA-256 over its LF form, and release archives are built from the working copy.
+* text=auto eol=lf
+*.png binary
+*.woff2 binary
+*.zip binary

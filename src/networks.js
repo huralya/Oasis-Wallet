@@ -55,6 +55,16 @@ export const NETWORKS = {
 };
 
 export const DEFAULT_NETWORK = 'sapphire-testnet';
+
+// Address format of each layer. Sapphire is an EVM ParaTime: its accounts are
+// 0x addresses. Consensus accounts are Ed25519 oasis1 addresses (ADR-0008).
+export const ADDRESS_FORMAT = { sapphire: '0x', consensus: 'oasis1' };
+
+// The other layer of the same environment: Consensus <-> Sapphire.
+export function pairedNetwork(net) {
+  const env = net.env.toLowerCase();
+  return NETWORKS[`${net.kind === 'sapphire' ? 'consensus' : 'sapphire'}-${env}`];
+}
 export const isMainnet = (net) => net.env === 'Mainnet';
 
 export function explorerTxUrl(net, hash) {
